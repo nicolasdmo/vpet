@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>V-Pet · Mascota Virtual</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="device">
+    <div class="device-top">
+      <div class="speaker"></div>
+      <div class="brand">V-PET</div>
+      <button class="help-btn" id="help-btn" title="Ayuda">?</button>
+    </div>
+
+    <div class="name-banner" id="name-banner">—</div>
+
+    <div class="screen-frame">
+      <div class="screen">
+        <canvas id="screen" width="200" height="200"></canvas>
+        <div id="status-bubble" class="status-bubble hidden"></div>
+        <div id="status-bar" class="status-bar">
+          <span id="stage-label">HUEVO</span>
+          <span id="lvl-label">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hatch-progress" id="hatch-progress">
+      <div class="hatch-label" id="hatch-label">Eclosión en 30s</div>
+      <div class="hatch-bar"><div id="hatch-fill" class="hatch-fill"></div></div>
+    </div>
+
+    <div class="needs-bar" id="needs-bar">
+      <div class="need" title="Hambre">
+        <div class="need-icon-wrap">🍖</div>
+        <div class="bar"><div id="hunger-fill" class="fill"></div></div>
+        <div class="need-label">Hambre</div>
+      </div>
+      <div class="need" title="Felicidad">
+        <div class="need-icon-wrap">😊</div>
+        <div class="bar"><div id="happy-fill" class="fill"></div></div>
+        <div class="need-label">Ánimo</div>
+      </div>
+      <div class="need" title="Energía">
+        <div class="need-icon-wrap">⚡</div>
+        <div class="bar"><div id="energy-fill" class="fill"></div></div>
+        <div class="need-label">Energía</div>
+      </div>
+      <div class="need" title="Higiene">
+        <div class="need-icon-wrap">🧼</div>
+        <div class="bar"><div id="hygiene-fill" class="fill"></div></div>
+        <div class="need-label">Limpieza</div>
+      </div>
+    </div>
+
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat">FUE <span id="stat-str">0</span></div>
+      <div class="stat">AGI <span id="stat-agi">0</span></div>
+      <div class="stat">INT <span id="stat-int">0</span></div>
+      <div class="stat">HP <span id="stat-hp">0/0</span></div>
+    </div>
+
+    <div class="age-line" id="age-line">Edad: 0min</div>
+
+    <div class="buttons-group">
+      <div class="buttons">
+        <button class="btn" data-action="feed">
+          <span class="btn-icon">🍖</span>
+          <span class="btn-label">Comer</span>
+          <span class="btn-key">A</span>
+        </button>
+        <button class="btn" data-action="clean">
+          <span class="btn-icon">🧼</span>
+          <span class="btn-label">Limpiar</span>
+          <span class="btn-key">S</span>
+        </button>
+        <button class="btn" data-action="sleep">
+          <span class="btn-icon">💤</span>
+          <span class="btn-label">Dormir</span>
+          <span class="btn-key">D</span>
+        </button>
+        <button class="btn" data-action="play">
+          <span class="btn-icon">❤️</span>
+          <span class="btn-label">Mimar</span>
+          <span class="btn-key">F</span>
+        </button>
+      </div>
+      <div class="buttons primary-row">
+        <button class="btn primary" data-action="train">
+          <span class="btn-icon">🏋️</span>
+          <span class="btn-label">Entrenar</span>
+          <span class="btn-key">T</span>
+        </button>
+        <button class="btn primary danger" data-action="battle">
+          <span class="btn-icon">⚔️</span>
+          <span class="btn-label">Batalla</span>
+          <span class="btn-key">B</span>
+        </button>
+        <button class="btn small" data-action="reset">
+          <span class="btn-icon">↺</span>
+          <span class="btn-label">Reiniciar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal genérico -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Overlay de error visible si hay JS error -->
+  <div id="error-overlay" class="error-overlay hidden">
+    <div class="error-box">
+      <div class="error-title">⚠ Error</div>
+      <div class="error-msg" id="error-msg"></div>
+      <button onclick="location.reload()">Recargar</button>
+    </div>
+  </div>
+
+  <script>
+    // Manejo global de errores
+    window.addEventListener('error', function(e){
+      var box = document.getElementById('error-overlay');
+      var msg = document.getElementById('error-msg');
+      if (box && msg) {
+        msg.textContent = (e.message || 'Error desconocido') + (e.filename ? ' @ ' + e.filename.split('/').pop() + ':' + e.lineno : '');
+        box.classList.remove('hidden');
+      }
+    });
+  </script>
+  <script src="js/sprites.js"></script>
+  <script src="js/types.js"></script>
+  <script src="js/monster.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/needs.js"></script>
+  <script src="js/minigames.js"></script>
+  <script src="js/battle.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
