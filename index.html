@@ -2,501 +2,151 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>V-Pet · Mascota Virtual</title>
 <style>
-/* === V-Pet Retro Styles v2 === */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --device-color: #f4a8b4;
-  --device-shadow: #ad6470;
-  --device-highlight: #ffd5dc;
-  --screen-bg: #a7c084;
-  --screen-bg-dim: #8aa56c;
-  --screen-dark: #1f2614;
-  --screen-mid: #3a4a25;
-  --btn-color: #432c30;
-  --btn-shadow: #20121a;
-  --text-light: #f0ecd8;
-  --accent-orange: #c97a3a;
-  --accent-red: #a83a3a;
+/* === V-Pet Retro 90s - B&N LCD === */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --device:#d4c89a;
+  --device-dk:#8c7e54;
+  --device-hl:#f1e9c5;
+  --screen-bg:#9bb27a;
+  --screen-dk:#1f2614;
+  --btn:#3a3530;
+  --btn-dk:#1c1a17;
+  --text:#f0ecd8;
+  --orange:#c97a3a;
+  --red:#a83a3a;
 }
-
-body {
-  font-family: 'Trebuchet MS', 'Verdana', sans-serif;
+body{
+  font-family:'Trebuchet MS','Verdana',sans-serif;
   background:
-    radial-gradient(circle at 30% 20%, #3a3f55 0%, #1a1c25 70%);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  color: var(--screen-dark);
+    radial-gradient(circle at 30% 20%,#2a2d3a 0%,#15171f 70%);
+  min-height:100vh;
+  min-height:100dvh;
+  display:flex;align-items:center;justify-content:center;
+  padding:10px;color:var(--screen-dk);
+  -webkit-tap-highlight-color:transparent;
+  overflow-x:hidden;
 }
-
-.device {
-  background:
-    radial-gradient(circle at 30% 18%, var(--device-highlight) 0%, var(--device-color) 50%, var(--device-shadow) 100%);
-  border-radius: 50% 50% 45% 45% / 38% 38% 55% 55%;
-  padding: 26px 30px 32px;
-  width: 380px;
+.device{
+  background:radial-gradient(circle at 30% 18%,var(--device-hl) 0%,var(--device) 55%,var(--device-dk) 100%);
+  border-radius:48% 48% 42% 42% / 35% 35% 50% 50%;
+  padding:24px 22px 28px;
+  width:100%;max-width:360px;
   box-shadow:
-    inset -10px -14px 24px rgba(0,0,0,0.25),
-    inset 8px 10px 20px rgba(255,255,255,0.4),
-    0 24px 50px rgba(0,0,0,0.55);
-  position: relative;
+    inset -8px -12px 22px rgba(0,0,0,.22),
+    inset 6px 8px 18px rgba(255,255,255,.4),
+    0 18px 40px rgba(0,0,0,.55);
+  position:relative;
 }
-
-.device-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 4px;
-  padding: 0 8px;
+.device-top{display:flex;align-items:center;justify-content:space-between;padding:0 6px;margin-bottom:2px}
+.speaker{width:42px;height:6px;background:repeating-linear-gradient(90deg,var(--device-dk) 0 3px,transparent 3px 6px);border-radius:4px}
+.brand{font-family:'Courier New',monospace;font-weight:bold;font-size:12px;letter-spacing:2px;color:var(--device-dk);text-shadow:1px 1px 0 rgba(255,255,255,.4)}
+.help-btn{width:22px;height:22px;border-radius:50%;background:var(--device-dk);color:var(--text);border:none;font-weight:bold;cursor:pointer;font-size:13px;box-shadow:0 2px 0 rgba(0,0,0,.3)}
+.help-btn:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(0,0,0,.3)}
+.name-banner{
+  text-align:center;font-family:'Courier New',monospace;font-weight:bold;
+  font-size:11px;letter-spacing:1.5px;color:var(--device-dk);
+  padding:4px 0 3px;text-shadow:0 1px 0 rgba(255,255,255,.4);
 }
-.speaker {
-  width: 46px;
-  height: 8px;
-  background: repeating-linear-gradient(90deg,
-    var(--device-shadow) 0 4px, transparent 4px 8px);
-  border-radius: 4px;
+.screen-frame{background:linear-gradient(145deg,#3a322a,#1f1a16);padding:10px;border-radius:8px;box-shadow:inset 4px 4px 10px rgba(0,0,0,.55),inset -2px -2px 6px rgba(255,255,255,.08)}
+.screen{background:var(--screen-bg);border:2px solid var(--screen-dk);border-radius:3px;padding:5px;position:relative;height:200px;overflow:hidden;box-shadow:inset 0 0 30px rgba(31,38,20,.25)}
+#screen{width:100%;height:170px;image-rendering:pixelated;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;display:block}
+.status-bubble{position:absolute;top:6px;left:50%;transform:translateX(-50%);background:var(--screen-dk);color:var(--screen-bg);font-family:'Courier New',monospace;font-size:9px;font-weight:bold;padding:3px 8px;border-radius:8px;letter-spacing:.5px;z-index:2;white-space:nowrap;box-shadow:0 2px 3px rgba(0,0,0,.4);animation:pop .3s ease-out}
+.status-bubble.hidden{display:none}
+@keyframes pop{0%{transform:translateX(-50%) scale(.4);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
+.status-bar{position:absolute;bottom:3px;left:6px;right:6px;display:flex;justify-content:space-between;font-family:'Courier New',monospace;font-size:9px;font-weight:bold;color:var(--screen-dk);letter-spacing:.5px;z-index:1}
+.hatch-progress{margin:8px 4px 0;display:none}
+.hatch-progress.visible{display:block}
+.hatch-label{font-size:9px;font-weight:bold;color:var(--device-dk);font-family:'Courier New',monospace;text-align:center;margin-bottom:3px;letter-spacing:.5px}
+.hatch-bar{height:6px;background:rgba(0,0,0,.2);border-radius:3px;overflow:hidden}
+.hatch-fill{height:100%;width:0%;background:linear-gradient(90deg,#ffd089,#ffae3a);transition:width .4s}
+.needs-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 4px 4px}
+.need{display:flex;flex-direction:column;align-items:center;gap:2px}
+.need-icon-wrap{font-size:14px;line-height:1}
+.bar{width:100%;height:6px;background:rgba(0,0,0,.25);border-radius:3px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.3)}
+.fill{height:100%;width:100%;background:linear-gradient(90deg,#4caf50,#8fde6f);transition:width .4s,background .3s}
+.fill.warn{background:linear-gradient(90deg,#ec9b1e,#f3c25c)}
+.fill.crit{background:linear-gradient(90deg,#c44a3a,#ee6e6a);animation:pulse .8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.need-label{font-size:7px;font-weight:bold;color:var(--device-dk);text-transform:uppercase;letter-spacing:.5px}
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin:3px 4px 4px;font-family:'Courier New',monospace;font-size:9px;font-weight:bold}
+.stat{background:rgba(0,0,0,.2);color:var(--text);padding:3px 4px;border-radius:3px;text-align:center;letter-spacing:.3px;display:flex;justify-content:space-between;gap:2px}
+.stat span{color:#ffe89a}
+.age-line{text-align:center;font-family:'Courier New',monospace;font-size:9px;color:var(--device-dk);font-weight:bold;margin:0 0 8px;letter-spacing:.5px}
+.buttons-group{display:flex;flex-direction:column;gap:8px}
+.buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 2px}
+.buttons.primary-row{grid-template-columns:2fr 2fr 1fr}
+.btn{
+  background:linear-gradient(145deg,#5a5048,var(--btn));color:var(--text);border:none;
+  border-radius:10px;padding:7px 2px 5px;cursor:pointer;
+  box-shadow:0 3px 0 var(--btn-dk),inset 1px 1px 2px rgba(255,255,255,.15);
+  transition:transform .08s,box-shadow .08s;
+  display:flex;flex-direction:column;align-items:center;gap:1px;
+  position:relative;font-family:inherit;min-height:54px;
+  -webkit-touch-callout:none;user-select:none;
 }
-.brand {
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  font-size: 14px;
-  letter-spacing: 2px;
-  color: var(--device-shadow);
-  text-shadow: 1px 1px 0 rgba(255,255,255,0.45);
-}
-.help-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--device-shadow);
-  color: var(--text-light);
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 14px;
-  box-shadow: 0 2px 0 rgba(0,0,0,0.3);
-}
-.help-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,0.3); }
-
-.name-banner {
-  text-align: center;
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  font-size: 12px;
-  letter-spacing: 2px;
-  color: var(--device-shadow);
-  padding: 6px 0 4px;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
-}
-
-.screen-frame {
-  background: linear-gradient(145deg, #4a2e34, #2a1820);
-  padding: 12px;
-  border-radius: 10px;
-  box-shadow:
-    inset 4px 4px 10px rgba(0,0,0,0.55),
-    inset -2px -2px 6px rgba(255,255,255,0.08),
-    0 2px 0 rgba(255,255,255,0.15);
-}
-
-.screen {
-  background: var(--screen-bg);
-  border: 2px solid var(--screen-dark);
-  border-radius: 4px;
-  padding: 6px;
-  position: relative;
-  height: 230px;
-  overflow: hidden;
-  box-shadow: inset 0 0 30px rgba(31,38,20,0.25);
-}
-
-#screen {
-  width: 100%;
-  height: 200px;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
-  display: block;
-}
-
-.status-bubble {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--screen-dark);
-  color: var(--screen-bg);
-  font-family: 'Courier New', monospace;
-  font-size: 10px;
-  font-weight: bold;
-  padding: 4px 10px;
-  border-radius: 10px;
-  letter-spacing: 0.5px;
-  z-index: 2;
-  white-space: nowrap;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-  animation: bubblePop 0.3s ease-out;
-}
-.status-bubble.hidden { display: none; }
-@keyframes bubblePop {
-  0% { transform: translateX(-50%) scale(0.4); opacity: 0; }
-  100% { transform: translateX(-50%) scale(1); opacity: 1; }
-}
-
-.status-bar {
-  position: absolute;
-  bottom: 4px;
-  left: 8px;
-  right: 8px;
-  display: flex;
-  justify-content: space-between;
-  font-family: 'Courier New', monospace;
-  font-size: 10px;
-  font-weight: bold;
-  color: var(--screen-dark);
-  letter-spacing: 0.5px;
-  z-index: 1;
-}
-
-.hatch-progress {
-  margin: 8px 6px 0;
-  display: none;
-}
-.hatch-progress.visible { display: block; }
-.hatch-label {
-  font-size: 10px;
-  font-weight: bold;
-  color: var(--device-shadow);
-  font-family: 'Courier New', monospace;
-  text-align: center;
-  margin-bottom: 3px;
-  letter-spacing: 1px;
-}
-.hatch-bar {
-  height: 6px;
-  background: rgba(0,0,0,0.2);
-  border-radius: 3px;
-  overflow: hidden;
-}
-.hatch-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #ffd089, #ffae3a);
-  transition: width 0.4s;
-}
-
-.needs-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin: 12px 6px 6px;
-}
-.need {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-.need-icon-wrap {
-  font-size: 16px;
-  line-height: 1;
-}
-.bar {
-  width: 100%;
-  height: 7px;
-  background: rgba(0,0,0,0.25);
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
-}
-.fill {
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(90deg, #4caf50, #8fde6f);
-  transition: width 0.4s, background 0.3s;
-}
-.fill.warn { background: linear-gradient(90deg, #ec9b1e, #f3c25c); }
-.fill.crit { background: linear-gradient(90deg, #c44a3a, #ee6e6a); animation: pulse 0.8s infinite; }
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-.need-label {
-  font-size: 8px;
-  font-weight: bold;
-  color: var(--device-shadow);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.stats-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-  margin: 4px 6px 6px;
-  font-family: 'Courier New', monospace;
-  font-size: 10px;
-  font-weight: bold;
-}
-.stat {
-  background: rgba(0,0,0,0.22);
-  color: var(--text-light);
-  padding: 4px 6px;
-  border-radius: 4px;
-  text-align: center;
-  letter-spacing: 0.5px;
-  display: flex;
-  justify-content: space-between;
-  gap: 4px;
-}
-.stat span { color: #ffe89a; }
-
-.age-line {
-  text-align: center;
-  font-family: 'Courier New', monospace;
-  font-size: 10px;
-  color: var(--device-shadow);
-  font-weight: bold;
-  margin: 0 0 10px;
-  letter-spacing: 1px;
-}
-
-.buttons-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  padding: 0 4px;
-}
-.buttons.primary-row {
-  grid-template-columns: 2fr 2fr 1fr;
-}
-.btn {
-  background: linear-gradient(145deg, #74525a, var(--btn-color));
-  color: var(--text-light);
-  border: none;
-  border-radius: 10px;
-  padding: 8px 4px 6px;
-  cursor: pointer;
-  box-shadow:
-    0 3px 0 var(--btn-shadow),
-    inset 1px 1px 3px rgba(255,255,255,0.18);
-  transition: transform 0.08s, box-shadow 0.08s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  position: relative;
-  font-family: inherit;
-}
-.btn:hover { filter: brightness(1.12); }
-.btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 1px 0 var(--btn-shadow);
-}
-.btn-icon { font-size: 20px; line-height: 1; }
-.btn-label {
-  font-size: 10px;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-.btn-key {
-  position: absolute;
-  top: 2px;
-  right: 4px;
-  font-size: 8px;
-  font-family: 'Courier New', monospace;
-  opacity: 0.55;
-}
-.btn.primary {
-  background: linear-gradient(145deg, #e09144, var(--accent-orange));
-  color: #fff;
-}
-.btn.primary.danger {
-  background: linear-gradient(145deg, #d05050, var(--accent-red));
-}
-.btn.small {
-  background: linear-gradient(145deg, #666, #333);
-}
-
+.btn:hover{filter:brightness(1.12)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--btn-dk)}
+.btn-icon{font-size:18px;line-height:1}
+.btn-label{font-size:9px;font-weight:bold;letter-spacing:.3px;text-transform:uppercase}
+.btn-key{position:absolute;top:2px;right:3px;font-size:7px;font-family:'Courier New',monospace;opacity:.5}
+.btn.primary{background:linear-gradient(145deg,#e09144,var(--orange));color:#fff}
+.btn.primary.danger{background:linear-gradient(145deg,#d05050,var(--red))}
+.btn.small{background:linear-gradient(145deg,#666,#333)}
 /* Modal */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.78);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  padding: 20px;
-}
-.modal.hidden { display: none; }
-.modal-content {
-  background: var(--screen-bg);
-  border: 4px solid var(--screen-dark);
-  border-radius: 10px;
-  padding: 18px;
-  max-width: 95%;
-  width: 440px;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.75);
-  color: var(--screen-dark);
-  font-family: 'Trebuchet MS', sans-serif;
-}
-.modal h2 {
-  margin-bottom: 10px;
-  text-align: center;
-  letter-spacing: 1px;
-  font-size: 18px;
-}
-.modal p { margin-bottom: 10px; line-height: 1.4; font-size: 13px; }
-.modal .actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 14px;
-  flex-wrap: wrap;
-}
-.modal .actions button {
-  background: var(--screen-dark);
-  color: var(--text-light);
-  border: none;
-  padding: 9px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: inherit;
-  font-weight: bold;
-  letter-spacing: 1px;
-  font-size: 13px;
-}
-.modal .actions button:hover { filter: brightness(1.2); }
-.modal .actions button.danger { background: var(--accent-red); }
-.modal .actions button.success { background: #3a8a4a; }
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;z-index:100;padding:14px}
+.modal.hidden{display:none}
+.modal-content{background:var(--screen-bg);border:3px solid var(--screen-dk);border-radius:8px;padding:14px;max-width:95%;width:420px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.7);color:var(--screen-dk);font-family:'Trebuchet MS',sans-serif}
+.modal h2{margin-bottom:8px;text-align:center;letter-spacing:1px;font-size:16px}
+.modal p{margin-bottom:8px;line-height:1.35;font-size:12px}
+.modal .actions{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.modal .actions button{background:var(--screen-dk);color:var(--text);border:none;padding:8px 14px;border-radius:5px;cursor:pointer;font-family:inherit;font-weight:bold;letter-spacing:.5px;font-size:12px;min-height:36px}
+.modal .actions button.danger{background:var(--red)}
+.modal .actions button.success{background:#3a8a4a}
+.minigame-canvas{display:block;margin:6px auto;background:#d8e0c0;border:2px solid var(--screen-dk);image-rendering:pixelated;border-radius:3px;max-width:100%}
+.minigame-info{text-align:center;font-weight:bold;font-size:12px;margin:5px 0}
+.battle-ui{display:flex;flex-direction:column;gap:6px}
+.battle-status{display:flex;justify-content:space-between;font-size:10px;font-weight:bold;align-items:center;flex-wrap:wrap;gap:4px}
+.hp-bar{width:100%;height:9px;background:rgba(0,0,0,.3);border:1px solid var(--screen-dk);border-radius:4px;overflow:hidden;margin-bottom:3px}
+.hp-bar .hp-fill{height:100%;background:linear-gradient(90deg,#4a8c3a,#7fd45f);transition:width .4s}
+.attack-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:6px}
+.attack-btn{background:var(--screen-dk);color:var(--text);border:2px solid #1a1f12;padding:6px 3px;border-radius:5px;cursor:pointer;font-family:inherit;font-size:10px;font-weight:bold;display:flex;flex-direction:column;gap:2px;min-height:50px}
+.attack-btn:disabled{opacity:.4;cursor:not-allowed}
+.attack-btn .type-tag{font-size:8px;padding:1px 3px;border-radius:3px}
+.type-fire{background:#d9534f;color:#fff}
+.type-water{background:#3a8acb;color:#fff}
+.type-plant{background:#4a8c3a;color:#fff}
+.type-elec{background:#d4b03a;color:#2f3a23}
+.type-earth{background:#8a6a3a;color:#fff}
+.battle-log{background:rgba(255,255,255,.4);border-radius:5px;padding:6px;font-size:10px;min-height:48px;max-height:70px;overflow-y:auto;font-style:italic}
+.error-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:9999;padding:14px}
+.error-overlay.hidden{display:none}
+.error-box{background:#fff;border-radius:10px;padding:16px;max-width:400px;font-family:'Courier New',monospace;color:#333}
+.error-title{color:#c44a3a;font-weight:bold;margin-bottom:8px;font-size:15px}
+.error-msg{font-size:11px;margin-bottom:10px;word-break:break-word}
+.error-box button{background:#c44a3a;color:#fff;border:none;padding:8px 14px;border-radius:5px;cursor:pointer}
 
-.minigame-canvas {
-  display: block;
-  margin: 8px auto;
-  background: #d8e0c0;
-  border: 2px solid var(--screen-dark);
-  image-rendering: pixelated;
-  border-radius: 4px;
+/* === Móvil === */
+@media (max-width:420px){
+  body{padding:6px}
+  .device{padding:18px 16px 22px;max-width:100%;border-radius:42% 42% 38% 38% / 28% 28% 50% 50%}
+  .screen{height:185px}
+  #screen{height:155px}
+  .btn{min-height:50px;border-radius:8px;padding:6px 1px 4px}
+  .btn-icon{font-size:16px}
+  .btn-label{font-size:8px}
+  .need-icon-wrap{font-size:12px}
+  .modal-content{padding:12px;width:100%}
+  .modal h2{font-size:14px}
+  .modal p{font-size:11px}
 }
-.minigame-info {
-  text-align: center;
-  font-weight: bold;
-  font-size: 13px;
-  margin: 6px 0;
-}
-
-.battle-ui { display: flex; flex-direction: column; gap: 8px; }
-.battle-status {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  font-weight: bold;
-  align-items: center;
-}
-.hp-bar {
-  width: 100%;
-  height: 10px;
-  background: rgba(0,0,0,0.3);
-  border: 1px solid var(--screen-dark);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 4px;
-}
-.hp-bar .hp-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4a8c3a, #7fd45f);
-  transition: width 0.4s;
-}
-.attack-buttons {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  margin-top: 8px;
-}
-.attack-btn {
-  background: var(--screen-dark);
-  color: var(--text-light);
-  border: 2px solid #1a1f12;
-  padding: 7px 4px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: bold;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  transition: transform 0.1s;
-}
-.attack-btn:hover:not(:disabled) { transform: scale(1.05); filter: brightness(1.25); }
-.attack-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.attack-btn .type-tag {
-  font-size: 9px;
-  padding: 2px 4px;
-  border-radius: 3px;
-}
-.type-fire   { background: #d9534f; color: #fff; }
-.type-water  { background: #3a8acb; color: #fff; }
-.type-plant  { background: #4a8c3a; color: #fff; }
-.type-elec   { background: #d4b03a; color: #2f3a23; }
-.type-earth  { background: #8a6a3a; color: #fff; }
-
-.battle-log {
-  background: rgba(255,255,255,0.45);
-  border-radius: 6px;
-  padding: 8px;
-  font-size: 11px;
-  min-height: 56px;
-  max-height: 80px;
-  overflow-y: auto;
-  font-style: italic;
-}
-
-.error-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 20px;
-}
-.error-overlay.hidden { display: none; }
-.error-box {
-  background: #fff;
-  border-radius: 10px;
-  padding: 18px;
-  max-width: 400px;
-  font-family: 'Courier New', monospace;
-  color: #333;
-}
-.error-title { color: #c44a3a; font-weight: bold; margin-bottom: 8px; font-size: 16px; }
-.error-msg { font-size: 12px; margin-bottom: 12px; word-break: break-word; }
-.error-box button {
-  background: #c44a3a;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-@media (max-width: 420px) {
-  .device { width: 100%; padding: 20px 22px 28px; }
+@media (max-height:680px){
+  .device{padding-top:16px;padding-bottom:20px}
+  .screen{height:170px}
+  #screen{height:140px}
 }
 </style>
 </head>
@@ -638,656 +288,123 @@ window.addEventListener('error', function(e){
 });
 </script>
 <script>
-/* === Sprites pixel art (16x16) === */
+/* Sprites B&N puro (estilo Tamagotchi/Digivice 90s) */
+const PALETTE={'#':'#1f2614','o':'#1f2614','O':'#1f2614','*':'#1f2614','w':'#e9e4d4','r':'#1f2614'};
+const SPRITES={
+// EGG - 3 frames balanceo
+egg:[
+[".....######.....","....########....","...##########...","..############..","..##oo####oo##..","..############..","..############..",".####oo##oo####.",".##############.","..############..","..##oo####oo##..","..############..","..############..","...##########...","....########....",".....######....."],
+["......######....",".....########...","....##########..","...############.","...##oo####oo##.","...############.","...############.","..############..","..##############","...############.","...##oo####oo##.","...############.","...############.","....##########..",".....########...","......######...."],
+["....######......","...########.....","..##########....",".############...",".##oo####oo##...",".############...",".############...","##############..",".############...",".############...",".##oo####oo##...",".############...",".############...","..##########....","...########.....","....######......"]
+],
+egg_cracking:[
+[".....######.....","....########....","...####ww####...","..####w##w####..","..#####w######..","..######w#####..",".######w########",".######w########",".#######w######.",".####ww#w######.","..####ww######..","..#####w######..","..######ww####..","...##########...","....########....","................"],
+[".....######.....","......######....",".....########...",".....####ww####.","....####w##w####","....#####w######","....######w#####","....######w#####","....####w#######","....####ww#####.","....#####w######","....#######w####","....######ww####","....##########..",".....########...","................"],
+["....######......","...########.....","...####ww####...","..####w##w####..","..#####w######..","..######w#####..",".######w########",".######w########",".#######w######.",".####ww#w######.","..####ww######..","..#####w######..","..######ww####..","..##########....","...########.....","................"]
+],
 
-const PALETTE = {
-  '#': '#1f2614',    // contorno muy oscuro
-  'o': '#3a4a25',    // relleno medio
-  'O': '#5a7240',    // relleno claro
-  '*': '#8aa564',    // brillo
-  'r': '#c44a3a',    // accent rojo
-  'b': '#3a6acb',
-  'g': '#4a8c3a',
-  'y': '#d4b03a',
-  'n': '#8a6a3a',
-  'w': '#e9e4d4',    // blanco para grietas
+// === BABIES (3 linajes) ===
+// baby_0 estilo Botamon (blob redondo con orejitas)
+baby_0:[
+[".##.........##..",".###........##..","..############..","..############..",".##############.",".##############.",".####.####.####.",".####.####.####.",".##############.",".##############.","..############..","..############..","...##########...","....######......","................","................"],
+["................",".##.........##..",".###........##..","..############..",".##############.",".##############.",".####.####.####.",".####.####.####.",".##############.",".##############.","..############..","..############..","...##########...","....######......","................","................"]
+],
+// baby_1 estilo Punimon (con antena)
+baby_1:[
+["......##........","......##........","......##........",".....####.......","....######......","...########.....","..##########....","..##.######.##..","..##########....","..#####.####....","..##########....","...########.....","....######......","....##..##......","...##....##.....","................"],
+["......##........","......##........","......##........","......##........",".....####.......","....######......","...########.....","..##########....","..##.######.##..","..##########....","..#####.####....","..##########....","...########.....","....##..##......","...##....##.....","................"]
+],
+// baby_2 estilo Yuramon (hoja arriba)
+baby_2:[
+["....##..........","....####........","....######......","....####........","....##..........","....##..........","...####.........","..########......",".##########.....",".##oo####oo#....",".##########.....",".##########.....","..########......","...##..##.......","................","................"],
+["....##..........","....####........","....######......","....####........","....##..........","....##..........","....##..........","...####.........","..########......",".##########.....",".##oo####oo#....",".##########.....",".##########.....","..########......","...##..##.......","................"]
+],
+
+// === ROOKIES (4 ramas x 2 variantes) ===
+// STR variante a (Agumon-like)
+rookie_str_a:[
+["......####......",".....######.....",".....######.....","....########....","....##oo##oo....","....########....","..############..",".##############.",".##############.",".##############.",".####o##o#o####.",".##############.","..############..","....##....##....","...####..####...","..######..######"],
+["......####......",".....######.....",".....######.....","....########....","....##oo##oo....","....########....","..############..",".##############.",".##############.",".##############.",".####o##o#o####.",".##############.","..############..","....##....##....","...####..####...","...####..####..."]
+],
+// STR variante b (Greymon-like más grande)
+rookie_str_b:[
+["...##......##...","..####....####..","..####....####..","..############..","..##oo####oo##..","..############..","..############..",".##############.",".##############.",".####o##o#o####.",".##############.","..############..","..##........##..","..##........##..","..####....####..","..######..######"],
+["...##......##...","..####....####..","..####....####..","..############..","..##oo####oo##..","..############..","..############..",".##############.",".##############.",".####o#o#o#####.",".##############.","..############..","..##........##..","..####....####..","..####....####..","..######..######"]
+],
+// AGI variante a (Eevee-like)
+rookie_agi_a:[
+["..##........##..","..####......####","..######....####","..########..####","..##############","..##oo####oo####","..##############","..##############","..####.####.####","..############..","...##########...","....##....##....","....##....##....","....##....##....","....####..####..","................"],
+["..##........##..","..####......####","..######....####","..########..####","..##############","..##oo####oo####","..##############","..##############","..####.####.####","..############..","...##########...","....##....##....","....##....##....","....##....##....","....####..####..","....####..####.."]
+],
+// AGI variante b (Vulpix-like)
+rookie_agi_b:[
+["..#.........##..","..##.......####.","..###.....######","..####...########","..####################","..####oo####oo####","..################","..################","..####.####.####","..##############","....##########..","....##......##..","...####....####.","..######..######","................","................"],
+["..#.........##..","..##.......####.","..###.....######","..####...########","..####################","..####oo####oo####","..################","..################","..####.####.####","..##############","....##########..","....##......##..","...####....####.","..######..######","..######..######","................"]
+],
+// INT variante a (cabeza grande)
+rookie_int_a:[
+[".....######.....","....########....","...##########...","..############..",".##############.","##oo########oo##","##oo########oo##","##oo###oo###oo##","##oo########oo##","################",".##############.","..############..","....########....","....##....##....","...####..####...","................"],
+[".....######.....","....########....","...##########...","..############..",".##############.","##oo###oo###oo##","##oo###oo###oo##","##oo########oo##","##oo###oo###oo##","################",".##############.","..############..","....########....","....##....##....","...####..####...","................"]
+],
+// INT variante b (con cuerno mago)
+rookie_int_b:[
+["......##........",".....####.......","....######......","...########.....","..##########....","..##oo####oo##..","..############..","..####oo####....","..############..",".##############.","..############..","...##########...","....########....","....##....##....","....##....##....","...####..####..."],
+["......##........",".....####.......","....######......","...########.....","..##########....","..##oo####oo##..","..############..","..####oo####....","..############..",".##############.","..############..","...##########...","....########....","....##....##....","...####..####...","...####..####..."]
+],
+// BAL variante a (Pikachu-like)
+rookie_bal_a:[
+["..#............#",".###..........##","..######....####","..##############","..##oo####oo####","..##############","..##############","..####.####.####","..##############","..############..","...##########...","....##....##....","...####..####...","................","................","................"],
+["..#............#",".###..........##","..######....####","..##############","..##oo####oo####","..##############","..##############","..####.####.####","..##############","..############..","...##########...","....##....##....","...####..####...","...####..####...","................","................"]
+],
+// BAL variante b (Bulbasaur-like)
+rookie_bal_b:[
+["...####....####.","..######..######","..########.#####","..##############","..##oo####oo####","..##############","..##############","..####.####.####","..##############",".##############.",".##############.","..############..","....##....##....","...####..####...","................","................"],
+["...####....####.","..######..######","..########.#####","..##############","..##oo####oo####","..##############","..##############","..####.####.####","..##############",".##############.",".##############.","..############..","....##....##....","...####..####...","...####..####...","................"]
+],
+
+// === CHAMPIONS (4 ramas) ===
+champ_str_a:[
+["..##........##..","..####......####","..##############","..##############","..##oo########oo","..##############","..##oo####oo##..","..##############",".##############.",".####o##o##o###.",".##############.","..##############","..##........##..","..####....####..","..####....####..","..######..######"],
+["..##........##..","..####......####","..##############","..##############","..##oo########oo","..##############","..##oo####oo##..","..##############",".##############.",".####o##o##o###.",".##############.","..##############","..##........##..","..######..######","..####....####..","..######..######"]
+],
+champ_agi_a:[
+["..##........##..","..##........##..","..####....####..","..############..","..############..","..##oo####oo####","..##############","..##############","..####.####.####","..##############","....##########..","....##......##..","....##....######","....##..########","....##..####....","....##..####...."],
+["..##........##..","..##........##..","..####....####..","..############..","..############..","..##oo####oo####","..##############","..##############","..####.####.####","..##############","....##########..","....##......##..","....##....######","....##..########","....##..####....","....##..####...."]
+],
+champ_int_a:[
+[".......##.......","......####......",".....######.....","....########....","...##########...","..############..",".##############.","##oo########oo##","##oo###oo###oo##","##oo########oo##","################",".##############.","..############..","....########....","..####....####..",".######..######."],
+[".......##.......","......####......","....########....","...##########...","..############..",".##############.","##oo########oo##","##oo###oo###oo##","##oo########oo##","##oo###oo###oo##","################",".##############.","..############..","....########....","..####....####..",".######..######."]
+],
+champ_bal_a:[
+["....##....##....","....####..####..","..############..","..############..","..##oo####oo####","..##############","..##############","..####.####.####","..##############",".##############.",".##############.","..############..","....##....##....","...####..####...","..######..######","..######..######"],
+["....##....##....","....####..####..","..############..","..############..","..##oo####oo####","..##############","..##############","..####.####.####","..##############",".##############.",".##############.","..############..","....##....##....","...####..####...","..######..######","..######..######"]
+],
+
+// === Items ===
+food:[["....##..........","...####.........","..##oo##........",".##oooo##.......","##oo##oo##......","##oooooo##......",".##oooo##.......","..######........","................","................","................","................","................","................","................","................"]],
+poop:[["................","................","................","................","................","................","................",".....####.......","....##oo##......","...####oo##.....","..##oooooo##....","..##oo##oo##....",".##oooooooo##...",".############...","................","................"]],
+sleep:[["....######......","....####o#......","......#o#.......",".....#o#........","....#o##........","....######......","................","......######....","......####o#....","........#o#.....",".......#o#......","......#o##......","......######....","................","................","................"]],
+heart:[["..rr...rr.......",".rrrr.rrrr......",".rrrrrrrrr......",".rrrrrrrrr......","..rrrrrrr.......","...rrrrr........","....rrr.........",".....r..........","................","................","................","................","................","................","................","................"]],
+skull:[["....######......","...########.....","..####oo####....","..##oo##oo##....","..##oo##oo##....","..####oo####....","...########.....","....#o##o#......",".....####.......","................","................","................","................","................","................","................"]],
+rival_blob:[
+["................","....######......","...########.....","..############..",".##oo####oo##...",".############...",".##oo####oo##...",".############...","..############..","...##########...","...##.##.##.....","..##.....##.....","................","................","................","................"],
+["................","................","....######......","...########.....","..############..",".##oo####oo##...",".############...",".##oo####oo##...",".############...","..############..","...##########...","...##.##.##.....","..##.....##.....","................","................","................"]
+]
 };
 
-const SPRITES = {
-  // === Huevo (3 frames de animación) ===
-  egg: [
-    [ // frame 0: normal
-      "................",
-      ".....######.....",
-      "....########....",
-      "...##########...",
-      "..############..",
-      "..####o###o###..",
-      "..############..",
-      ".##############.",
-      ".####O####O####.",
-      ".##############.",
-      ".####o####o####.",
-      ".##############.",
-      "..############..",
-      "..############..",
-      "...##########...",
-      "....########....",
-    ],
-    [ // frame 1: ligero balanceo derecha
-      "................",
-      "......######....",
-      ".....########...",
-      "....##########..",
-      "...############.",
-      "...####o###o###.",
-      "...############.",
-      "..##############",
-      "..####O####O###.",
-      "..##############",
-      "..####o####o###.",
-      "..##############",
-      "...############.",
-      "...############.",
-      "....##########..",
-      ".....########...",
-    ],
-    [ // frame 2: balanceo izquierda
-      "................",
-      "....######......",
-      "...########.....",
-      "..##########....",
-      ".############...",
-      ".####o###o###...",
-      ".############...",
-      "##############..",
-      ".####O####O###..",
-      "##############..",
-      ".####o####o###..",
-      "##############..",
-      ".############...",
-      ".############...",
-      "..##########....",
-      "...########.....",
-    ],
-  ],
-  // Huevo con grietas (último tramo)
-  egg_cracking: [
-    [
-      "................",
-      ".....######.....",
-      "....########....",
-      "...####ww####...",
-      "..####w##w####..",
-      "..#####w######..",
-      "..######w#####..",
-      ".######w########",
-      ".####O##wwO####.",
-      ".#######w######.",
-      ".####o##w#o####.",
-      ".######w#######.",
-      "..####ww#####...",
-      "..#####w#####...",
-      "...##########...",
-      "....########....",
-    ],
-    [ // shake right + cracks
-      "................",
-      "......######....",
-      ".....########...",
-      ".....####ww####.",
-      "....####w##w####",
-      "....#####w######",
-      "....######w#####",
-      "....######w#####",
-      "....####O#wwO###",
-      "....#######w####",
-      "....####o##w#o##",
-      "....######w#####",
-      ".....####ww#####",
-      ".....#####w#####",
-      ".....##########.",
-      "......########..",
-    ],
-    [ // shake left + cracks
-      "................",
-      "....######......",
-      "...########.....",
-      "...####ww####...",
-      "..####w##w####..",
-      "..#####w######..",
-      "..######w#####..",
-      "..######w#####..",
-      "..####O##wwO###.",
-      "..#######w######",
-      "..####o##w#o####",
-      "..######w#######",
-      "..####ww#####...",
-      "..#####w#####...",
-      "..##########....",
-      "...########.....",
-    ],
-  ],
-
-  // === Bebé ===
-  baby: [
-    [
-      "................",
-      "................",
-      "....######......",
-      "...#OOOOOO#.....",
-      "..#OO####OO#....",
-      ".#OO#oo##oo#O#..",
-      ".#OOO*oo*oOOO#..",
-      ".#OOOOOOOOOOO#..",
-      "..#OO####OO#....",
-      "...#OOOOOO#.....",
-      "....######......",
-      "....#O##O#......",
-      "....##..##......",
-      "...##....##.....",
-      "................",
-      "................",
-    ],
-    [ // bounce
-      "................",
-      "................",
-      "................",
-      "....######......",
-      "...#OOOOOO#.....",
-      "..#OO####OO#....",
-      ".#OO#oo##oo#O#..",
-      ".#OOO*oo*oOOO#..",
-      ".#OOOOOOOOOOO#..",
-      "..#OO####OO#....",
-      "...#OOOOOO#.....",
-      "....######......",
-      "....#O##O#......",
-      "....##..##......",
-      "...##....##.....",
-      "................",
-    ],
-  ],
-
-  // === Rookies (4 ramas) ===
-  rookie_str: [
-    [
-      "..#..........#..",
-      ".##..........##.",
-      "#OO#........#OO#",
-      "#OOO########OOO#",
-      "#OOOOOOOOOOOOOO#",
-      "#O##oOOOOOOo##O#",
-      "#O#o#OO##OO#o#O#",
-      "#OO*oo###*oo*O#.",
-      "#OOOOOOOOOOOO#..",
-      "#OO##OOOO##OO#..",
-      "#OOOOOOOOOOO#...",
-      ".#OOOOOOOOO#....",
-      "..#########.....",
-      "..##.....##.....",
-      "..##.....##.....",
-      "..###...###.....",
-    ],
-    [
-      "..#..........#..",
-      ".##..........##.",
-      "#OO#........#OO#",
-      "#OOO########OOO#",
-      "#OOOOOOOOOOOOOO#",
-      "#O##oOOOOOOo##O#",
-      "#O#o#OOO##O#o#O#",
-      "#OO*OOO##OOO*O#.",
-      "#OOOOOOOOOOOO#..",
-      "#OO##OOOO##OO#..",
-      "#OOOOOOOOOOO#...",
-      ".#OOOOOOOOO#....",
-      "..#########.....",
-      "..##.....##.....",
-      ".###......##....",
-      ".###.....###....",
-    ],
-  ],
-  rookie_agi: [
-    [
-      "...#........#...",
-      "..#O#......#O#..",
-      ".#OO#......#OO#.",
-      ".#OOO######OOO#.",
-      ".#OOOOOOOOOOOO#.",
-      ".#O##OOOOOO##O#.",
-      ".#O##OO##OO##O#.",
-      ".#OO*OO##OO*OO#.",
-      ".#OOOOO##OOOOO#.",
-      ".#OOOOOOOOOOOO#.",
-      "..#OOOOOOOOOO#..",
-      "...##########...",
-      "....#O##O#......",
-      "...##....##.....",
-      "..##......##....",
-      "..#........#....",
-    ],
-    [
-      "...#........#...",
-      "..#O#......#O#..",
-      "..#OO#....#OO#..",
-      "..#OOO####OOO#..",
-      "..#OOOOOOOOOO#..",
-      "..#O##OOOO##O#..",
-      "..#O##OOOO##O#..",
-      "..#OO*OOOO*OO#..",
-      "..#OOOO##OOOO#..",
-      "..#OOOOOOOOO#...",
-      "...#OOOOOO#.....",
-      "....######......",
-      "....#O##O#......",
-      "...##....##.....",
-      "..##......##....",
-      "..#........#....",
-    ],
-  ],
-  rookie_int: [
-    [
-      "................",
-      "....######......",
-      "...#OOOOOO#.....",
-      "..#OOOOOOOO#....",
-      ".#OO##OO##OO#...",
-      "#OO#**O#**OO#...",
-      "#OOOO*##*OOOO#..",
-      "#OOOOOOOOOOOO#..",
-      "#OOOOO##OOOOO#..",
-      ".#OOOOOOOOOO#...",
-      "..#OOOOOOOO#....",
-      "...########.....",
-      "...#OO##OO#.....",
-      "...##....##.....",
-      "..##......##....",
-      "..##......##....",
-    ],
-    [
-      "................",
-      "....######......",
-      "...#OOOOOO#.....",
-      "..#O######O#....",
-      ".#OO*OOOO*OO#...",
-      "#OO#**OO**#OO#..",
-      "#OOOO####OOOO#..",
-      "#OOOOOOOOOOOO#..",
-      "#OOOOO##OOOOO#..",
-      ".#OOOOOOOOOO#...",
-      "..#OOOOOOOO#....",
-      "...########.....",
-      "...#OO##OO#.....",
-      "...##....##.....",
-      "..##......##....",
-      "..##......##....",
-    ],
-  ],
-  rookie_bal: [
-    [
-      "................",
-      "...########.....",
-      "..#OOOOOOOO#....",
-      ".#OO##OO##OO#...",
-      ".#O#**OO**#O#...",
-      ".#OO*O##O*OO#...",
-      ".#OOOOOOOOOO#...",
-      "..#OOOOOOOO#....",
-      "..#OO####OO#....",
-      "..#OOOOOOOO#....",
-      "..#OOOOOOOO#....",
-      "...########.....",
-      "...#O##O#O#.....",
-      "...##..##.#.....",
-      "..##....####....",
-      "..##......##....",
-    ],
-    [
-      "................",
-      "...########.....",
-      "..#OOOOOOOO#....",
-      ".#O########O#...",
-      ".#O*OO##OO*O#...",
-      ".#O#OO**OO#O#...",
-      ".#OOOO##OOOO#...",
-      "..#OOOOOOOO#....",
-      "..#OO####OO#....",
-      "..#OOOOOOOO#....",
-      "..#OOOOOOOO#....",
-      "...########.....",
-      "...#O##O#O#.....",
-      "...##..##.#.....",
-      "..##....####....",
-      "..##......##....",
-    ],
-  ],
-
-  // === Champions ===
-  champ_str: [
-    [
-      "##............##",
-      "###..........###",
-      "####........####",
-      "#OO##########OO#",
-      "#OOOOOOOOOOOOOO#",
-      "#OO##OOOOOO##OO#",
-      "#OO##OO##OO##OO#",
-      "#OOO*OO##OO*OOO#",
-      "#OOOOOOOOOOOOOO#",
-      "#OO####OO####OO#",
-      "#OOOOOOOOOOOOOO#",
-      ".#OO########OO#.",
-      ".#OOOOOOOOOOOO#.",
-      "..##OO####OO##..",
-      "..##........##..",
-      "..###......###..",
-    ],
-    [
-      "##............##",
-      "###..........###",
-      "####........####",
-      "#OO##########OO#",
-      "#OO*OOOOOOO*OOO#",
-      "#OO##OO##OO##OO#",
-      "#OOOOOO##OOOOOO#",
-      "#OO**OO##OO**OO#",
-      "#OOOOOOOOOOOOOO#",
-      "#OO########OOOO#",
-      "#OO########OOOO#",
-      ".#OOOOOOOOOOOO#.",
-      ".#OO########OO#.",
-      "..##OO####OO##..",
-      "..##........##..",
-      "..###......###..",
-    ],
-  ],
-  champ_agi: [
-    [
-      ".##..........##.",
-      "#OO#........#OO#",
-      "#OOO#......#OOO#",
-      "#OOOO#....#OOOO#",
-      "#OO#O######O#OO#",
-      "#OOOOOOOOOOOOOO#",
-      "#OO##OOOO##OO#O#",
-      "#OO##OO##O##OO#.",
-      "#OO*OOO##OOO*O#.",
-      "#OOOO*##*OOOO#..",
-      ".#OOOOOOOOOO#...",
-      "..#########O#...",
-      "..#O##OO##O#....",
-      "..##......##....",
-      ".##........##...",
-      "##..........##..",
-    ],
-    [
-      ".##..........##.",
-      "#OO#........#OO#",
-      "#OOO#......#OOO#",
-      "#OOOO######OOOO#",
-      "#OO#OOOOOOOO#OO#",
-      "#OOOO##OO##OOOO#",
-      "#OO#O#OO##O#O#O#",
-      "#OO##OO##OO##OO#",
-      "#OO*OOO##OOO*O#.",
-      "#OOOO*##*OOOO#..",
-      ".#OOOOOOOOOO#...",
-      "..#########O#...",
-      "..#O##OO##O#....",
-      "..##......##....",
-      ".##........##...",
-      "##..........##..",
-    ],
-  ],
-  champ_int: [
-    [
-      "......##........",
-      ".....####.......",
-      "....######......",
-      "...########.....",
-      "..##########....",
-      ".####OOOO####...",
-      "#OO##OOOO##OO#..",
-      "#OO*OO##OO*OO#..",
-      "#OOOO*##*OOOO#..",
-      "#OOOOOOOOOOOO#..",
-      "#OO##OOOO##OO#..",
-      ".#OO######OO#...",
-      "..#OOOOOOOO#....",
-      "..###O##O###....",
-      ".##..####..##...",
-      "##....##....##..",
-    ],
-    [
-      "......##........",
-      ".....####.......",
-      "....######......",
-      "...##OOOO##.....",
-      "..##OO*OO*##....",
-      ".####*##*####...",
-      "#OO*OO##OO*OO#..",
-      "#OO##OOOO##OO#..",
-      "#OOOO####OOOO#..",
-      "#OOOOOOOOOOOO#..",
-      "#OO##OOOO##OO#..",
-      ".#OO######OO#...",
-      "..#OOOOOOOO#....",
-      "..###O##O###....",
-      ".##..####..##...",
-      "##....##....##..",
-    ],
-  ],
-  champ_bal: [
-    [
-      "....#####.......",
-      "...#######......",
-      "..####O####.....",
-      ".####OOO####....",
-      "#OOOOOOOOOOO#...",
-      "#OO##OOOO##O#...",
-      "#OO##OO##O##O#..",
-      "#OO*OO##OO*OO#..",
-      "#OOOO####OOOO#..",
-      "#OOOOOOOOOOOO#..",
-      ".#OO######OO#...",
-      "..#OOOOOOOO#....",
-      "..#O##OO##O#....",
-      "..##......##....",
-      ".##........##...",
-      "##..........##..",
-    ],
-    [
-      "....#####.......",
-      "...#######......",
-      "..####O####.....",
-      ".####O*O####....",
-      "#OOOO*O*OOOO#...",
-      "#OO*O*OO*O*OO#..",
-      "#OO##OO##OO##O#.",
-      "#OO*OO##OO*OO#..",
-      "#OOOO####OOOO#..",
-      "#OOOOOOOOOOOO#..",
-      ".#OO######OO#...",
-      "..#OOOOOOOO#....",
-      "..#O##OO##O#....",
-      "..##......##....",
-      ".##........##...",
-      "##..........##..",
-    ],
-  ],
-
-  // === Items en pantalla ===
-  food: [
-    [
-      "................",
-      "....##..........",
-      "...####.........",
-      "..##oo##........",
-      ".##oo##oo##.....",
-      "##oo####oo##....",
-      "##oooooo##......",
-      ".##oooo##.......",
-      "..######........",
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-    ],
-  ],
-  poop: [
-    [
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-      ".....####.......",
-      "....##oo##......",
-      "...####oo##.....",
-      "..##oooooo##....",
-      "..##oo##oo##....",
-      ".##oooooooo##...",
-      ".############...",
-      "................",
-      "................",
-    ],
-  ],
-  sleep: [
-    [
-      "................",
-      "....######......",
-      "....####o#......",
-      "......#o#.......",
-      ".....#o#........",
-      "....#o##........",
-      "....######......",
-      "................",
-      "......######....",
-      "......####o#....",
-      "........#o#.....",
-      ".......#o#......",
-      "......#o##......",
-      "......######....",
-      "................",
-      "................",
-    ],
-  ],
-  heart: [
-    [
-      "..rr...rr.......",
-      ".rrrr.rrrr......",
-      ".rrrrrrrrr......",
-      ".rrrrrrrrr......",
-      "..rrrrrrr.......",
-      "...rrrrr........",
-      "....rrr.........",
-      ".....r..........",
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-    ],
-  ],
-  skull: [
-    [
-      "................",
-      "....######......",
-      "...########.....",
-      "..####OO####....",
-      "..##OO##OO##....",
-      "..##OO##OO##....",
-      "..####OO####....",
-      "...########.....",
-      "....#O##O#......",
-      ".....####.......",
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-      "................",
-    ],
-  ],
-
-  rival_blob: [
-    [
-      "................",
-      "................",
-      "....######......",
-      "...########.....",
-      "..#OO####OO#....",
-      ".#OO##OO##OO#...",
-      ".#OO*O##O*OO#...",
-      ".#OOOO##OOOO#...",
-      "..#OOOOOOOO#....",
-      "..#OO####OO#....",
-      "..#OOOOOOOO#....",
-      "...########.....",
-      "...##.##.##.....",
-      "..##.....##.....",
-      "................",
-      "................",
-    ],
-  ],
-};
-
-function drawSprite(ctx, spriteName, x, y, scale, frame, tint) {
-  if (scale == null) scale = 4;
-  if (frame == null) frame = 0;
-  var sprite = SPRITES[spriteName];
-  if (!sprite) return;
-  var grid = sprite[frame % sprite.length];
-  for (var row = 0; row < grid.length; row++) {
-    var line = grid[row];
-    for (var col = 0; col < line.length; col++) {
-      var c = line[col];
-      if (c === '.') continue;
-      var color = PALETTE[c];
-      if (tint) {
-        if (c === 'O') color = tint;
-        else if (c === 'o') color = darken(tint, 30);
-        else if (c === '*') color = lighten(tint, 40);
-      }
-      if (!color) continue;
-      ctx.fillStyle = color;
-      ctx.fillRect(x + col * scale, y + row * scale, scale, scale);
-    }
-  }
+function drawSprite(ctx,name,x,y,scale,frame,tint){
+  if(scale==null)scale=4;if(frame==null)frame=0;
+  var s=SPRITES[name];if(!s)return;
+  var g=s[frame%s.length];
+  for(var r=0;r<g.length;r++){var l=g[r];for(var c=0;c<l.length;c++){
+    var ch=l[c];if(ch==='.')continue;
+    ctx.fillStyle=PALETTE[ch]||'#1f2614';
+    ctx.fillRect(x+c*scale,y+r*scale,scale,scale);
+  }}
 }
-
-function lighten(hex, amt) {
-  var n = parseInt(hex.slice(1), 16);
-  var r = (n >> 16) + amt;
-  var g = ((n >> 8) & 0xff) + amt;
-  var b = (n & 0xff) + amt;
-  r = Math.min(255, Math.max(0, r));
-  g = Math.min(255, Math.max(0, g));
-  b = Math.min(255, Math.max(0, b));
-  return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
-}
-
-function darken(hex, amt) { return lighten(hex, -amt); }
-
-function typeColor(type) {
-  var map = {
-    fire:  '#c44a3a',
-    water: '#3a6acb',
-    plant: '#4a8c3a',
-    elec:  '#b89a2a',
-    earth: '#8a6a3a'
-  };
-  return map[type] || '#5a7240';
-}
+function typeColor(t){return{fire:'#c44a3a',water:'#3a6acb',plant:'#4a8c3a',elec:'#b89a2a',earth:'#8a6a3a'}[t]||'#1f2614'}
+function lighten(h,a){return h}
+function darken(h,a){return h}
 /* === Tipos elementales y tabla de ventajas ===
  * Ciclo pentagonal:
  *   Fuego  → Planta  (super efectivo)
@@ -1411,6 +528,7 @@ function createMonster(name) {
     stage: STAGE.EGG,
     branch: 'bal',
     type: pick(TYPES),
+    lineage: Math.floor(Math.random() * 3),
     level: 0,
     xp: 0,
     stats: { str: 1, agi: 1, int: 1 },
@@ -1432,10 +550,12 @@ function createMonster(name) {
 function spriteForMonster(m) {
   if (m.stage === STAGE.DEAD) return 'skull';
   if (m.stage === STAGE.EGG) return 'egg';
-  if (m.stage === STAGE.BABY) return 'baby';
-  if (m.stage === STAGE.ROOKIE) return 'rookie_' + m.branch;
-  if (m.stage === STAGE.CHAMP) return 'champ_' + m.branch;
-  return 'baby';
+  var lin = (m.lineage == null) ? 0 : m.lineage;
+  if (m.stage === STAGE.BABY) return 'baby_' + lin;
+  var variant = (lin % 2 === 0) ? 'a' : 'b';
+  if (m.stage === STAGE.ROOKIE) return 'rookie_' + m.branch + '_' + variant;
+  if (m.stage === STAGE.CHAMP) return 'champ_' + m.branch + '_a';
+  return 'baby_0';
 }
 
 function computeBranch(stats) {
