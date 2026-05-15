@@ -5,16 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>V-Pet · Mascota Virtual</title>
 <style>
-/* === V-Pet Retro 90s - B&N LCD === */
+/* === V-Pet 90s rectangular - estilo Bandai Digital Monster === */
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --device:#d4c89a;
-  --device-dk:#8c7e54;
-  --device-hl:#f1e9c5;
+  --device:#9ca095;
+  --device-dk:#5a5d54;
+  --device-hl:#cbcec3;
+  --device-shadow:#393b34;
   --screen-bg:#9bb27a;
   --screen-dk:#1f2614;
-  --btn:#3a3530;
-  --btn-dk:#1c1a17;
+  --btn:#2a2823;
+  --btn-dk:#0e0d0a;
   --text:#f0ecd8;
   --orange:#c97a3a;
   --red:#a83a3a;
@@ -22,80 +23,114 @@
 body{
   font-family:'Trebuchet MS','Verdana',sans-serif;
   background:
-    radial-gradient(circle at 30% 20%,#2a2d3a 0%,#15171f 70%);
-  min-height:100vh;
-  min-height:100dvh;
+    radial-gradient(ellipse at 30% 20%,#3a3d4a 0%,#1a1c25 70%);
+  min-height:100vh;min-height:100dvh;
   display:flex;align-items:center;justify-content:center;
   padding:10px;color:var(--screen-dk);
-  -webkit-tap-highlight-color:transparent;
-  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;overflow-x:hidden;
 }
 .device{
-  background:radial-gradient(circle at 30% 18%,var(--device-hl) 0%,var(--device) 55%,var(--device-dk) 100%);
-  border-radius:48% 48% 42% 42% / 35% 35% 50% 50%;
-  padding:24px 22px 28px;
-  width:100%;max-width:360px;
+  background:
+    /* textura plástica granulada */
+    repeating-linear-gradient(0deg, rgba(0,0,0,.04) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 4px),
+    linear-gradient(160deg, var(--device-hl) 0%, var(--device) 45%, var(--device-dk) 100%);
+  border-radius:14px 14px 18px 18px;
+  padding:18px 16px 20px;
+  width:100%;max-width:340px;
   box-shadow:
-    inset -8px -12px 22px rgba(0,0,0,.22),
-    inset 6px 8px 18px rgba(255,255,255,.4),
-    0 18px 40px rgba(0,0,0,.55);
+    inset -3px -4px 0 var(--device-shadow),
+    inset 3px 3px 0 var(--device-hl),
+    inset 0 -14px 22px rgba(0,0,0,.18),
+    0 12px 32px rgba(0,0,0,.55);
   position:relative;
 }
-.device-top{display:flex;align-items:center;justify-content:space-between;padding:0 6px;margin-bottom:2px}
-.speaker{width:42px;height:6px;background:repeating-linear-gradient(90deg,var(--device-dk) 0 3px,transparent 3px 6px);border-radius:4px}
-.brand{font-family:'Courier New',monospace;font-weight:bold;font-size:12px;letter-spacing:2px;color:var(--device-dk);text-shadow:1px 1px 0 rgba(255,255,255,.4)}
-.help-btn{width:22px;height:22px;border-radius:50%;background:var(--device-dk);color:var(--text);border:none;font-weight:bold;cursor:pointer;font-size:13px;box-shadow:0 2px 0 rgba(0,0,0,.3)}
-.help-btn:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(0,0,0,.3)}
+/* "Antena" superior tipo Digivice */
+.device::before{
+  content:'';position:absolute;top:-10px;right:18px;width:18px;height:14px;
+  background:var(--device-dk);border-radius:3px 3px 0 0;
+  box-shadow:inset 1px 1px 0 var(--device);
+}
+/* Asita inferior */
+.device::after{
+  content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
+  width:60px;height:8px;background:var(--device-dk);
+  border-radius:0 0 6px 6px;box-shadow:inset 1px 1px 0 rgba(255,255,255,.08);
+}
+.device-top{display:flex;align-items:center;justify-content:space-between;padding:0 4px;margin-bottom:6px}
+.speaker{width:38px;height:5px;background:repeating-linear-gradient(90deg,var(--device-dk) 0 3px,transparent 3px 5px);border-radius:2px}
+.brand{font-family:'Courier New',monospace;font-weight:bold;font-size:11px;letter-spacing:2px;color:var(--device-shadow);text-shadow:1px 1px 0 rgba(255,255,255,.3)}
+.help-btn,.mute-btn{
+  width:22px;height:22px;border-radius:5px;
+  background:var(--btn);color:var(--text);border:none;
+  font-weight:bold;cursor:pointer;font-size:12px;
+  box-shadow:0 2px 0 var(--btn-dk),inset 1px 1px 0 rgba(255,255,255,.15);
+}
+.help-btn:active,.mute-btn:active{transform:translateY(1px);box-shadow:0 1px 0 var(--btn-dk)}
+.top-controls{display:flex;gap:4px}
 .name-banner{
   text-align:center;font-family:'Courier New',monospace;font-weight:bold;
-  font-size:11px;letter-spacing:1.5px;color:var(--device-dk);
-  padding:4px 0 3px;text-shadow:0 1px 0 rgba(255,255,255,.4);
+  font-size:11px;letter-spacing:1px;color:var(--device-shadow);
+  padding:3px 0;text-shadow:0 1px 0 rgba(255,255,255,.3);
+  background:rgba(0,0,0,.12);border-radius:3px;margin-bottom:6px;
 }
-.screen-frame{background:linear-gradient(145deg,#3a322a,#1f1a16);padding:10px;border-radius:8px;box-shadow:inset 4px 4px 10px rgba(0,0,0,.55),inset -2px -2px 6px rgba(255,255,255,.08)}
-.screen{background:var(--screen-bg);border:2px solid var(--screen-dk);border-radius:3px;padding:5px;position:relative;height:200px;overflow:hidden;box-shadow:inset 0 0 30px rgba(31,38,20,.25)}
+/* Marco de la pantalla LCD */
+.screen-frame{
+  background:linear-gradient(145deg,#252320,#100e0c);
+  padding:8px;border-radius:6px;
+  box-shadow:
+    inset 4px 4px 8px rgba(0,0,0,.7),
+    inset -2px -2px 4px rgba(255,255,255,.05),
+    0 1px 0 var(--device-hl);
+}
+.screen{
+  background:var(--screen-bg);
+  border:2px solid var(--screen-dk);border-radius:2px;
+  padding:5px;position:relative;height:200px;overflow:hidden;
+  box-shadow:inset 0 0 28px rgba(31,38,20,.35);
+}
 #screen{width:100%;height:170px;image-rendering:pixelated;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;display:block}
 .status-bubble{position:absolute;top:6px;left:50%;transform:translateX(-50%);background:var(--screen-dk);color:var(--screen-bg);font-family:'Courier New',monospace;font-size:9px;font-weight:bold;padding:3px 8px;border-radius:8px;letter-spacing:.5px;z-index:2;white-space:nowrap;box-shadow:0 2px 3px rgba(0,0,0,.4);animation:pop .3s ease-out}
 .status-bubble.hidden{display:none}
 @keyframes pop{0%{transform:translateX(-50%) scale(.4);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
 .status-bar{position:absolute;bottom:3px;left:6px;right:6px;display:flex;justify-content:space-between;font-family:'Courier New',monospace;font-size:9px;font-weight:bold;color:var(--screen-dk);letter-spacing:.5px;z-index:1}
-.hatch-progress{margin:8px 4px 0;display:none}
+.hatch-progress{margin:6px 4px 0;display:none}
 .hatch-progress.visible{display:block}
-.hatch-label{font-size:9px;font-weight:bold;color:var(--device-dk);font-family:'Courier New',monospace;text-align:center;margin-bottom:3px;letter-spacing:.5px}
-.hatch-bar{height:6px;background:rgba(0,0,0,.2);border-radius:3px;overflow:hidden}
+.hatch-label{font-size:9px;font-weight:bold;color:var(--device-shadow);font-family:'Courier New',monospace;text-align:center;margin-bottom:3px;letter-spacing:.5px}
+.hatch-bar{height:6px;background:rgba(0,0,0,.25);border-radius:3px;overflow:hidden}
 .hatch-fill{height:100%;width:0%;background:linear-gradient(90deg,#ffd089,#ffae3a);transition:width .4s}
-.needs-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 4px 4px}
+.needs-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:8px 2px 4px}
 .need{display:flex;flex-direction:column;align-items:center;gap:2px}
-.need-icon-wrap{font-size:14px;line-height:1}
-.bar{width:100%;height:6px;background:rgba(0,0,0,.25);border-radius:3px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.3)}
+.need-icon-wrap{font-size:13px;line-height:1}
+.bar{width:100%;height:6px;background:rgba(0,0,0,.28);border-radius:3px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.3)}
 .fill{height:100%;width:100%;background:linear-gradient(90deg,#4caf50,#8fde6f);transition:width .4s,background .3s}
 .fill.warn{background:linear-gradient(90deg,#ec9b1e,#f3c25c)}
 .fill.crit{background:linear-gradient(90deg,#c44a3a,#ee6e6a);animation:pulse .8s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.need-label{font-size:7px;font-weight:bold;color:var(--device-dk);text-transform:uppercase;letter-spacing:.5px}
-.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin:3px 4px 4px;font-family:'Courier New',monospace;font-size:9px;font-weight:bold}
-.stat{background:rgba(0,0,0,.2);color:var(--text);padding:3px 4px;border-radius:3px;text-align:center;letter-spacing:.3px;display:flex;justify-content:space-between;gap:2px}
+.need-label{font-size:7px;font-weight:bold;color:var(--device-shadow);text-transform:uppercase;letter-spacing:.3px}
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin:3px 2px 4px;font-family:'Courier New',monospace;font-size:9px;font-weight:bold}
+.stat{background:rgba(0,0,0,.25);color:var(--text);padding:3px 4px;border-radius:3px;text-align:center;display:flex;justify-content:space-between;gap:2px}
 .stat span{color:#ffe89a}
-.age-line{text-align:center;font-family:'Courier New',monospace;font-size:9px;color:var(--device-dk);font-weight:bold;margin:0 0 8px;letter-spacing:.5px}
-.buttons-group{display:flex;flex-direction:column;gap:8px}
-.buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 2px}
+.age-line{text-align:center;font-family:'Courier New',monospace;font-size:9px;color:var(--device-shadow);font-weight:bold;margin:0 0 8px;letter-spacing:.3px}
+.buttons-group{display:flex;flex-direction:column;gap:7px}
+.buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:0 2px}
 .buttons.primary-row{grid-template-columns:2fr 2fr 1fr}
 .btn{
-  background:linear-gradient(145deg,#5a5048,var(--btn));color:var(--text);border:none;
-  border-radius:10px;padding:7px 2px 5px;cursor:pointer;
-  box-shadow:0 3px 0 var(--btn-dk),inset 1px 1px 2px rgba(255,255,255,.15);
+  background:linear-gradient(145deg,#4a4640,var(--btn));color:var(--text);
+  border:none;border-radius:8px;padding:6px 2px 4px;cursor:pointer;
+  box-shadow:0 3px 0 var(--btn-dk),inset 1px 1px 2px rgba(255,255,255,.12);
   transition:transform .08s,box-shadow .08s;
   display:flex;flex-direction:column;align-items:center;gap:1px;
-  position:relative;font-family:inherit;min-height:54px;
+  position:relative;font-family:inherit;min-height:50px;
   -webkit-touch-callout:none;user-select:none;
 }
-.btn:hover{filter:brightness(1.12)}
 .btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--btn-dk)}
-.btn-icon{font-size:18px;line-height:1}
-.btn-label{font-size:9px;font-weight:bold;letter-spacing:.3px;text-transform:uppercase}
+.btn-icon{font-size:17px;line-height:1}
+.btn-label{font-size:9px;font-weight:bold;text-transform:uppercase;letter-spacing:.3px}
 .btn-key{position:absolute;top:2px;right:3px;font-size:7px;font-family:'Courier New',monospace;opacity:.5}
 .btn.primary{background:linear-gradient(145deg,#e09144,var(--orange));color:#fff}
 .btn.primary.danger{background:linear-gradient(145deg,#d05050,var(--red))}
-.btn.small{background:linear-gradient(145deg,#666,#333)}
+.btn.small{background:linear-gradient(145deg,#555,#222)}
 /* Modal */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;z-index:100;padding:14px}
 .modal.hidden{display:none}
@@ -128,15 +163,13 @@ body{
 .error-title{color:#c44a3a;font-weight:bold;margin-bottom:8px;font-size:15px}
 .error-msg{font-size:11px;margin-bottom:10px;word-break:break-word}
 .error-box button{background:#c44a3a;color:#fff;border:none;padding:8px 14px;border-radius:5px;cursor:pointer}
-
-/* === Móvil === */
 @media (max-width:420px){
   body{padding:6px}
-  .device{padding:18px 16px 22px;max-width:100%;border-radius:42% 42% 38% 38% / 28% 28% 50% 50%}
+  .device{padding:14px 12px 18px;max-width:100%;border-radius:10px 10px 14px 14px}
   .screen{height:185px}
   #screen{height:155px}
-  .btn{min-height:50px;border-radius:8px;padding:6px 1px 4px}
-  .btn-icon{font-size:16px}
+  .btn{min-height:46px;border-radius:6px}
+  .btn-icon{font-size:15px}
   .btn-label{font-size:8px}
   .need-icon-wrap{font-size:12px}
   .modal-content{padding:12px;width:100%}
@@ -144,150 +177,211 @@ body{
   .modal p{font-size:11px}
 }
 @media (max-height:680px){
-  .device{padding-top:16px;padding-bottom:20px}
+  .device{padding-top:14px;padding-bottom:16px}
   .screen{height:170px}
   #screen{height:140px}
 }
 </style>
 </head>
 <body>
-  <div class="device">
-    <div class="device-top">
-      <div class="speaker"></div>
-      <div class="brand">V-PET</div>
+<div class="device">
+  <div class="device-top">
+    <div class="speaker"></div>
+    <div class="brand">V-PET</div>
+    <div class="top-controls">
+      <button class="mute-btn" id="mute-btn" title="Mute">🔊</button>
       <button class="help-btn" id="help-btn" title="Ayuda">?</button>
     </div>
-
-    <div class="name-banner" id="name-banner">—</div>
-
-    <div class="screen-frame">
-      <div class="screen">
-        <canvas id="screen" width="200" height="200"></canvas>
-        <div id="status-bubble" class="status-bubble hidden"></div>
-        <div id="status-bar" class="status-bar">
-          <span id="stage-label">HUEVO</span>
-          <span id="lvl-label">—</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="hatch-progress" id="hatch-progress">
-      <div class="hatch-label" id="hatch-label">Eclosión en 30s</div>
-      <div class="hatch-bar"><div id="hatch-fill" class="hatch-fill"></div></div>
-    </div>
-
-    <div class="needs-bar" id="needs-bar">
-      <div class="need" title="Hambre">
-        <div class="need-icon-wrap">🍖</div>
-        <div class="bar"><div id="hunger-fill" class="fill"></div></div>
-        <div class="need-label">Hambre</div>
-      </div>
-      <div class="need" title="Felicidad">
-        <div class="need-icon-wrap">😊</div>
-        <div class="bar"><div id="happy-fill" class="fill"></div></div>
-        <div class="need-label">Ánimo</div>
-      </div>
-      <div class="need" title="Energía">
-        <div class="need-icon-wrap">⚡</div>
-        <div class="bar"><div id="energy-fill" class="fill"></div></div>
-        <div class="need-label">Energía</div>
-      </div>
-      <div class="need" title="Higiene">
-        <div class="need-icon-wrap">🧼</div>
-        <div class="bar"><div id="hygiene-fill" class="fill"></div></div>
-        <div class="need-label">Limpieza</div>
-      </div>
-    </div>
-
-    <div class="stats-bar" id="stats-bar">
-      <div class="stat">FUE <span id="stat-str">0</span></div>
-      <div class="stat">AGI <span id="stat-agi">0</span></div>
-      <div class="stat">INT <span id="stat-int">0</span></div>
-      <div class="stat">HP <span id="stat-hp">0/0</span></div>
-    </div>
-
-    <div class="age-line" id="age-line">Edad: 0min</div>
-
-    <div class="buttons-group">
-      <div class="buttons">
-        <button class="btn" data-action="feed">
-          <span class="btn-icon">🍖</span>
-          <span class="btn-label">Comer</span>
-          <span class="btn-key">A</span>
-        </button>
-        <button class="btn" data-action="clean">
-          <span class="btn-icon">🧼</span>
-          <span class="btn-label">Limpiar</span>
-          <span class="btn-key">S</span>
-        </button>
-        <button class="btn" data-action="sleep">
-          <span class="btn-icon">💤</span>
-          <span class="btn-label">Dormir</span>
-          <span class="btn-key">D</span>
-        </button>
-        <button class="btn" data-action="play">
-          <span class="btn-icon">❤️</span>
-          <span class="btn-label">Mimar</span>
-          <span class="btn-key">F</span>
-        </button>
-      </div>
-      <div class="buttons primary-row">
-        <button class="btn primary" data-action="train">
-          <span class="btn-icon">🏋️</span>
-          <span class="btn-label">Entrenar</span>
-          <span class="btn-key">T</span>
-        </button>
-        <button class="btn primary danger" data-action="battle">
-          <span class="btn-icon">⚔️</span>
-          <span class="btn-label">Batalla</span>
-          <span class="btn-key">B</span>
-        </button>
-        <button class="btn small" data-action="reset">
-          <span class="btn-icon">↺</span>
-          <span class="btn-label">Reiniciar</span>
-        </button>
+  </div>
+  <div class="name-banner" id="name-banner">—</div>
+  <div class="screen-frame">
+    <div class="screen">
+      <canvas id="screen" width="200" height="200"></canvas>
+      <div id="status-bubble" class="status-bubble hidden"></div>
+      <div id="status-bar" class="status-bar">
+        <span id="stage-label">HUEVO</span>
+        <span id="lvl-label">—</span>
       </div>
     </div>
   </div>
-
-  <!-- Modal genérico -->
-  <div id="modal" class="modal hidden">
-    <div class="modal-content">
-      <div id="modal-body"></div>
+  <div class="hatch-progress" id="hatch-progress">
+    <div class="hatch-label" id="hatch-label">Eclosión en 30s</div>
+    <div class="hatch-bar"><div id="hatch-fill" class="hatch-fill"></div></div>
+  </div>
+  <div class="needs-bar">
+    <div class="need" title="Hambre">
+      <div class="need-icon-wrap">🍖</div>
+      <div class="bar"><div id="hunger-fill" class="fill"></div></div>
+      <div class="need-label">Hambre</div>
+    </div>
+    <div class="need" title="Felicidad">
+      <div class="need-icon-wrap">😊</div>
+      <div class="bar"><div id="happy-fill" class="fill"></div></div>
+      <div class="need-label">Ánimo</div>
+    </div>
+    <div class="need" title="Energía">
+      <div class="need-icon-wrap">⚡</div>
+      <div class="bar"><div id="energy-fill" class="fill"></div></div>
+      <div class="need-label">Energía</div>
+    </div>
+    <div class="need" title="Higiene">
+      <div class="need-icon-wrap">🧼</div>
+      <div class="bar"><div id="hygiene-fill" class="fill"></div></div>
+      <div class="need-label">Limpieza</div>
     </div>
   </div>
-
-  <!-- Overlay de error visible si hay JS error -->
-  <div id="error-overlay" class="error-overlay hidden">
-    <div class="error-box">
-      <div class="error-title">⚠ Error</div>
-      <div class="error-msg" id="error-msg"></div>
-      <button onclick="location.reload()">Recargar</button>
+  <div class="stats-bar">
+    <div class="stat">FUE <span id="stat-str">0</span></div>
+    <div class="stat">AGI <span id="stat-agi">0</span></div>
+    <div class="stat">INT <span id="stat-int">0</span></div>
+    <div class="stat">HP <span id="stat-hp">0/0</span></div>
+  </div>
+  <div class="age-line" id="age-line">Edad: 0min</div>
+  <div class="buttons-group">
+    <div class="buttons">
+      <button class="btn" data-action="feed"><span class="btn-icon">🍖</span><span class="btn-label">Comer</span><span class="btn-key">A</span></button>
+      <button class="btn" data-action="clean"><span class="btn-icon">🧼</span><span class="btn-label">Limpiar</span><span class="btn-key">S</span></button>
+      <button class="btn" data-action="sleep"><span class="btn-icon">💤</span><span class="btn-label">Dormir</span><span class="btn-key">D</span></button>
+      <button class="btn" data-action="play"><span class="btn-icon">❤️</span><span class="btn-label">Mimar</span><span class="btn-key">F</span></button>
+    </div>
+    <div class="buttons primary-row">
+      <button class="btn primary" data-action="train"><span class="btn-icon">🏋️</span><span class="btn-label">Entrenar</span><span class="btn-key">T</span></button>
+      <button class="btn primary danger" data-action="battle"><span class="btn-icon">⚔️</span><span class="btn-label">Batalla</span><span class="btn-key">B</span></button>
+      <button class="btn small" data-action="reset"><span class="btn-icon">↺</span><span class="btn-label">Reset</span></button>
     </div>
   </div>
-
-  <script>
-    // Manejo global de errores
-    window.addEventListener('error', function(e){
-      var box = document.getElementById('error-overlay');
-      var msg = document.getElementById('error-msg');
-      if (box && msg) {
-        msg.textContent = (e.message || 'Error desconocido') + (e.filename ? ' @ ' + e.filename.split('/').pop() + ':' + e.lineno : '');
-        box.classList.remove('hidden');
-      }
-    });
-  </script>
+</div>
+<div id="modal" class="modal hidden"><div class="modal-content"><div id="modal-body"></div></div></div>
+<div id="error-overlay" class="error-overlay hidden"><div class="error-box"><div class="error-title">⚠ Error</div><div class="error-msg" id="error-msg"></div><button onclick="location.reload()">Recargar</button></div></div>
 <script>
 window.addEventListener('error', function(e){
   var box = document.getElementById('error-overlay');
   var msg = document.getElementById('error-msg');
   if (box && msg) {
-    msg.textContent = (e.message || 'Error desconocido') + (e.filename ? ' @ ' + e.filename.split('/').pop() + ':' + e.lineno : '');
+    msg.textContent = (e.message || 'Error') + (e.filename ? ' @ ' + e.filename.split('/').pop() + ':' + e.lineno : '');
     box.classList.remove('hidden');
   }
 });
 </script>
 <script>
+window.addEventListener('error', function(e){
+  var box = document.getElementById('error-overlay');
+  var msg = document.getElementById('error-msg');
+  if (box && msg) {
+    msg.textContent = (e.message || 'Error') + (e.filename ? ' @ ' + e.filename.split('/').pop() + ':' + e.lineno : '');
+    box.classList.remove('hidden');
+  }
+});
+</script>
+<script>
+/* === Sistema de audio sintetizado (Web Audio API, 8-bit chiptune) === */
+var AUDIO = {
+  ctx: null,
+  muted: false,
+  musicOn: true,
+  musicTimer: null,
+  musicStep: 0,
+  masterGain: null,
+  init: function () {
+    if (this.ctx) return;
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AC();
+      this.masterGain = this.ctx.createGain();
+      this.masterGain.gain.value = 0.18;
+      this.masterGain.connect(this.ctx.destination);
+    } catch (e) { console.warn('AudioContext no disponible:', e); }
+  },
+  resume: function () {
+    if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+  },
+  // Beep básico: freq Hz, dur s, tipo de onda
+  beep: function (freq, dur, type, vol) {
+    if (this.muted || !this.ctx) return;
+    if (vol == null) vol = 0.5;
+    var t = this.ctx.currentTime;
+    var osc = this.ctx.createOscillator();
+    var g = this.ctx.createGain();
+    osc.type = type || 'square';
+    osc.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(vol, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.connect(g); g.connect(this.masterGain);
+    osc.start(t); osc.stop(t + dur + 0.02);
+  },
+  // Ráfaga de varias notas
+  sequence: function (notes, opts) {
+    if (this.muted || !this.ctx) return;
+    var self = this;
+    opts = opts || {};
+    var step = opts.step || 0.08;
+    var dur = opts.dur || 0.07;
+    var type = opts.type || 'square';
+    var vol = opts.vol || 0.5;
+    notes.forEach(function (f, i) {
+      setTimeout(function () { self.beep(f, dur, type, vol); }, i * step * 1000);
+    });
+  },
+  // === Efectos de sonido === ///
+  sfxBtn:     function(){ this.beep(880, 0.04, 'square', 0.35); },
+  sfxFeed:    function(){ this.sequence([523, 659, 784], {step:0.06, dur:0.08}); },
+  sfxClean:   function(){ this.sequence([1200, 800, 1200, 800], {step:0.05, dur:0.04, type:'triangle'}); },
+  sfxSleep:   function(){ this.sequence([440, 330, 220], {step:0.12, dur:0.15, type:'triangle', vol:0.4}); },
+  sfxPet:     function(){ this.sequence([659, 784, 988], {step:0.07, dur:0.1, type:'triangle'}); },
+  sfxLevel:   function(){ this.sequence([523, 659, 784, 1047], {step:0.08, dur:0.1}); },
+  sfxEvolve:  function(){ this.sequence([392, 494, 587, 698, 784, 988, 1175], {step:0.1, dur:0.15}); },
+  sfxHatch:   function(){ this.sequence([330, 440, 523, 659, 880], {step:0.08, dur:0.1}); },
+  sfxHit:     function(){ this.beep(120, 0.15, 'sawtooth', 0.5); },
+  sfxCrit:    function(){ this.sequence([1500, 800, 1500, 800], {step:0.04, dur:0.04, type:'sawtooth', vol:0.4}); },
+  sfxWin:     function(){ this.sequence([523, 659, 784, 1047, 1319], {step:0.1, dur:0.15}); },
+  sfxLose:    function(){ this.sequence([523, 415, 311, 220], {step:0.15, dur:0.2, type:'sawtooth', vol:0.4}); },
+  sfxSick:    function(){ this.sequence([220, 200, 180, 160], {step:0.15, dur:0.2, type:'sawtooth', vol:0.3}); },
+  sfxDeath:   function(){ this.sequence([220, 175, 147, 110, 87], {step:0.2, dur:0.3, type:'sawtooth', vol:0.4}); },
+  sfxHungry:  function(){ this.sequence([523, 392], {step:0.15, dur:0.1, vol:0.3}); },
+  sfxHappy:   function(){ this.sequence([880, 1047], {step:0.1, dur:0.08, vol:0.3}); },
+  sfxClick:   function(){ this.beep(660, 0.03, 'square', 0.3); },
+  sfxCorrect: function(){ this.sequence([659, 988], {step:0.06, dur:0.08}); },
+  sfxWrong:   function(){ this.beep(140, 0.2, 'sawtooth', 0.4); },
+
+  // === Música de fondo === ///
+  // Melodía 8-bit en loop, tipo Tamagotchi
+  melody: [
+    523, 659, 784, 659,
+    523, 587, 659, 523,
+    440, 523, 659, 523,
+    392, 440, 523, 440
+  ],
+  startMusic: function () {
+    var self = this;
+    if (this.musicTimer || !this.ctx) return;
+    this.musicStep = 0;
+    this.musicTimer = setInterval(function () {
+      if (self.muted || !self.musicOn) return;
+      var note = self.melody[self.musicStep % self.melody.length];
+      var t = self.ctx.currentTime;
+      var osc = self.ctx.createOscillator();
+      var g = self.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(note, t);
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.06, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+      osc.connect(g); g.connect(self.masterGain);
+      osc.start(t); osc.stop(t + 0.2);
+      self.musicStep++;
+    }, 280);
+  },
+  stopMusic: function () {
+    if (this.musicTimer) { clearInterval(this.musicTimer); this.musicTimer = null; }
+  },
+  toggleMute: function () {
+    this.muted = !this.muted;
+    if (this.muted) this.stopMusic();
+    else { this.init(); this.resume(); this.startMusic(); }
+    return this.muted;
+  }
+};
 /* Sprites B&N puro (estilo Tamagotchi/Digivice 90s) */
 const PALETTE={'#':'#1f2614','o':'#1f2614','O':'#1f2614','*':'#1f2614','w':'#e9e4d4','r':'#1f2614'};
 const SPRITES={
@@ -381,8 +475,12 @@ champ_bal_a:[
 ],
 
 // === Items ===
-food:[["....##..........","...####.........","..##oo##........",".##oooo##.......","##oo##oo##......","##oooooo##......",".##oooo##.......","..######........","................","................","................","................","................","................","................","................"]],
-poop:[["................","................","................","................","................","................","................",".....####.......","....##oo##......","...####oo##.....","..##oooooo##....","..##oo##oo##....",".##oooooooo##...",".############...","................","................"]],
+food:[
+["................","................","....######......","...########.....","..####ww####....",".##wwwwwwwwww##.","##wwwwwwwwwwww##","##wwwwwwwwwwww##",".##wwwwwwwwww##","..############..","....######......","......##........","......##........","................","................","................"],
+["................","................","....######......","...########....."," ..####ww####....",".##wwwwww####...","##wwwwww##......","##wwww##........",".##wwww#........","..#####.........","....##..........","................","................","................","................","................"],
+["................","................","................","................","................","................","................","................","................",".....##.........",".....##.........","................","................","................","................","................"]
+],
+poop:[["................","................","......####......","....########....","...##########...","..########ww##..","..############..",".####ww######...",".############...","##############..","##############..",".############...","..############..","...##########...","..############..",".############..."]],
 sleep:[["....######......","....####o#......","......#o#.......",".....#o#........","....#o##........","....######......","................","......######....","......####o#....","........#o#.....",".......#o#......","......#o##......","......######....","................","................","................"]],
 heart:[["..rr...rr.......",".rrrr.rrrr......",".rrrrrrrrr......",".rrrrrrrrr......","..rrrrrrr.......","...rrrrr........","....rrr.........",".....r..........","................","................","................","................","................","................","................","................"]],
 skull:[["....######......","...########.....","..####oo####....","..##oo##oo##....","..##oo##oo##....","..####oo####....","...########.....","....#o##o#......",".....####.......","................","................","................","................","................","................","................"]],
@@ -1487,18 +1585,32 @@ function startBattle(playerMonster, onEnd) {
 }
 /* Main loop */
 (function () {
-  const canvas = document.getElementById('screen');
-  const ctx = canvas.getContext('2d');
+  var canvas = document.getElementById('screen');
+  var ctx = canvas.getContext('2d');
   ctx.imageSmoothingEnabled = false;
-  let monster = loadMonster();
+  var monster = loadMonster();
   if (!monster) { monster = createMonster(promptName()); saveMonster(monster); }
-  let frame = 0, lastTickReal = Date.now(), lastBubble = '', bubbleUntil = 0;
-  const W = canvas.width, H = canvas.height;
+  var frame = 0, lastTickReal = Date.now(), lastBubble = '', bubbleUntil = 0;
+  var W = canvas.width, H = canvas.height;
+  // Estado de animaciones puntuales
+  var eatAnim = null;  // {startFrame, duration} animación comida
+  var hurtAnim = 0;    // frames restantes shake
+  // === Init audio (lazy: hasta primer click por política de navegadores) ===
+  function audioBoot(){
+    AUDIO.init(); AUDIO.resume();
+    if (AUDIO.musicOn && !AUDIO.muted) AUDIO.startMusic();
+    document.removeEventListener('click', audioBoot);
+    document.removeEventListener('keydown', audioBoot);
+    document.removeEventListener('touchstart', audioBoot);
+  }
+  document.addEventListener('click', audioBoot, {once:false});
+  document.addEventListener('keydown', audioBoot, {once:false});
+  document.addEventListener('touchstart', audioBoot, {once:false});
 
   function renderScreen() {
-    ctx.fillStyle = '#a7c084'; ctx.fillRect(0, 0, W, H);
-    ctx.fillStyle = 'rgba(31,38,20,0.05)';
-    for (let y = 0; y < H; y += 4) ctx.fillRect(0, y, W, 1);
+    ctx.fillStyle = '#9bb27a'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(31,38,20,0.04)';
+    for (var y = 0; y < H; y += 4) ctx.fillRect(0, y, W, 1);
     if (monster.stage === STAGE.DEAD) {
       drawSprite(ctx, 'skull', (W - 80) / 2, 50, 5, 0);
       ctx.fillStyle = '#1f2614'; ctx.font = 'bold 14px Courier New'; ctx.textAlign = 'center';
@@ -1506,53 +1618,94 @@ function startBattle(playerMonster, onEnd) {
       return;
     }
     if (monster.stage === STAGE.EGG) { drawEgg(); return; }
-    drawBody(); drawExtras();
+    drawBody();
+    drawExtras();
   }
 
   function drawEgg() {
-    const progress = Math.min(1, monster.age / HATCH_AGE_MIN);
-    let sprite = 'egg', frameSpeed = 60;
-    if (progress < 0.4) frameSpeed = 80;
-    else if (progress < 0.75) frameSpeed = 40;
-    else { sprite = 'egg_cracking'; frameSpeed = 12; }
-    const wf = Math.floor(frame / frameSpeed) % 3;
-    const scale = 6, bx = (W - 96) / 2, by = (H - 96) / 2 - 6;
-    let sx = 0, sy = 0;
-    if (progress > 0.85) { sx = (Math.random() - 0.5) * 4; sy = (Math.random() - 0.5) * 2; }
+    var progress = Math.min(1, monster.age / HATCH_AGE_MIN);
+    var sprite = 'egg', fSpeed = 60;
+    if (progress < 0.4) fSpeed = 80;
+    else if (progress < 0.75) fSpeed = 40;
+    else { sprite = 'egg_cracking'; fSpeed = 12; }
+    var wf = Math.floor(frame / fSpeed) % 3;
+    var scale = 6, bx = (W - 96) / 2, by = (H - 96) / 2 - 6;
+    var sx = 0, sy = 0;
+    if (progress > 0.85) { sx = (Math.random()-0.5)*4; sy = (Math.random()-0.5)*2; }
     drawSprite(ctx, sprite, bx + sx, by + sy, scale, wf);
     if (progress > 0.9 && Math.random() < 0.3) {
       ctx.fillStyle = '#fff5cf';
-      for (let i = 0; i < 4; i++) {
-        ctx.fillRect(bx + 20 + Math.random() * 56, by - 10 + Math.random() * 30, 3, 3);
-      }
+      for (var i = 0; i < 4; i++) ctx.fillRect(bx + 20 + Math.random()*56, by - 10 + Math.random()*30, 3, 3);
     }
   }
 
   function drawBody() {
-    const b2 = Math.floor(frame / 30) % 2;
-    const by = monster.sleeping ? 0 : (b2 === 0 ? 0 : -3);
-    const scale = 6, sx = (W - 96) / 2, sy = (H - 96) / 2 + by - 6;
-    const tint = (monster.stage >= STAGE.ROOKIE) ? typeColor(monster.type) : null;
-    drawSprite(ctx, spriteForMonster(monster), sx, sy, scale, b2, tint);
+    // === Animación de sway lateral más amplia ===
+    // El monstruo se balancea de lado a lado siguiendo una onda seno
+    var t = frame * 0.04;
+    var swayX = monster.sleeping ? 0 : Math.sin(t) * 12;   // -12 a +12 pixels
+    var swayY = monster.sleeping ? 0 : Math.abs(Math.sin(t*2)) * -3; // ligero bote
+    // Frame visual alterna con el sway (mira hacia donde camina)
+    var b2 = (Math.sin(t) > 0) ? 1 : 0;
+    // Shake si está dolido
+    if (hurtAnim > 0) { swayX += (Math.random()-0.5)*6; hurtAnim--; }
+    var scale = 6;
+    var sx = (W - 96) / 2 + swayX;
+    var sy = (H - 96) / 2 + swayY - 6;
+    drawSprite(ctx, spriteForMonster(monster), sx, sy, scale, b2);
+    window._lastSpriteX = sx;
+    window._lastSpriteY = sy;
   }
 
   function drawExtras() {
-    const sx = (W - 96) / 2, sy = (H - 96) / 2 - 6;
-    for (let i = 0; i < (monster.pooCount || 0); i++)
-      drawSprite(ctx, 'poop', 6 + i * 28, H - 38, 2, 0);
-    if (monster.sleeping) drawSprite(ctx, 'sleep', W - 50, 30, 2, 0);
+    var sx = window._lastSpriteX || (W - 96)/2;
+    var sy = window._lastSpriteY || (H - 96)/2 - 6;
+    // Cacas en la parte baja
+    for (var i = 0; i < (monster.pooCount || 0); i++)
+      drawSprite(ctx, 'poop', 6 + i * 30, H - 40, 2, 0);
+    if (monster.sleeping) drawSprite(ctx, 'sleep', W - 52, 10, 2, 0);
     if (monster.sick) drawSprite(ctx, 'skull', W - 50, 6, 2, 0);
-    if (window._heartTimer > 0) { drawSprite(ctx, 'heart', sx + 60, sy - 10, 3, 0); window._heartTimer--; }
-    if (window._foodTimer > 0) { drawSprite(ctx, 'food', sx + 70, sy + 30, 3, 0); window._foodTimer--; }
+    if (window._heartTimer > 0) {
+      var hy = sy - 14 + Math.sin(window._heartTimer*0.2)*3;
+      drawSprite(ctx, 'heart', sx + 60, hy, 3, 0);
+      window._heartTimer--;
+    }
+    // Animación de comer: el plato cae, se acerca y se hace pequeño
+    if (eatAnim) {
+      var phase = (frame - eatAnim.startFrame) / eatAnim.duration;
+      if (phase >= 1) { eatAnim = null; }
+      else {
+        var fx, fy, fs;
+        if (phase < 0.35) {
+          // cae desde arriba
+          fx = sx + 70;
+          fy = -16 + (phase/0.35) * (sy + 30 - (-16));
+          fs = 3;
+        } else if (phase < 0.7) {
+          // se acerca al monstruo (mordisco)
+          var p = (phase - 0.35)/0.35;
+          fx = sx + 70 - p * 30;
+          fy = sy + 30;
+          fs = 3;
+        } else {
+          // se achica y desaparece
+          var p2 = (phase - 0.7)/0.3;
+          fx = sx + 40;
+          fy = sy + 30;
+          fs = Math.max(0, 3 - p2 * 3);
+        }
+        if (fs > 0) drawSprite(ctx, 'food', fx, fy, fs, 0);
+      }
+    }
   }
 
   function renderUI() {
-    const s = monsterSummary(monster);
-    const nameEl = document.getElementById('name-banner');
+    var s = monsterSummary(monster);
+    var nameEl = document.getElementById('name-banner');
     if (monster.stage === STAGE.EGG) nameEl.textContent = '🥚 HUEVO MISTERIOSO 🥚';
     else if (monster.stage === STAGE.DEAD) nameEl.textContent = '✝ ' + monster.name + ' ✝';
     else {
-      const br = monster.stage >= STAGE.ROOKIE ? ' · ' + s.branch : '';
+      var br = monster.stage >= STAGE.ROOKIE ? ' · ' + s.branch : '';
       nameEl.textContent = monster.name + ' ' + s.typeEmoji + br;
     }
     document.getElementById('stage-label').textContent = s.stage;
@@ -1569,20 +1722,19 @@ function startBattle(playerMonster, onEnd) {
     document.getElementById('stat-int').textContent = s.int;
     document.getElementById('stat-hp').textContent = Math.round(s.hp) + '/' + s.maxHp;
     document.getElementById('age-line').textContent = 'Edad: ' + formatAge(monster.age);
-    const hp = document.getElementById('hatch-progress');
+    var hp = document.getElementById('hatch-progress');
     if (monster.stage === STAGE.EGG) {
       hp.classList.add('visible');
-      const pct = Math.min(100, (monster.age / HATCH_AGE_MIN) * 100);
+      var pct = Math.min(100, (monster.age / HATCH_AGE_MIN) * 100);
       document.getElementById('hatch-fill').style.width = pct + '%';
-      const rem = Math.max(0, Math.ceil(HATCH_AGE_MIN - monster.age));
-      document.getElementById('hatch-label').textContent =
-        pct >= 100 ? '¡A punto de eclosionar!' : 'Eclosión en ' + rem + 's';
-    } else { hp.classList.remove('visible'); }
+      var rem = Math.max(0, Math.ceil(HATCH_AGE_MIN - monster.age));
+      document.getElementById('hatch-label').textContent = pct >= 100 ? '¡A punto de eclosionar!' : 'Eclosión en ' + rem + 's';
+    } else hp.classList.remove('visible');
     updateBubble();
   }
 
   function setBar(id, v) {
-    const el = document.getElementById(id);
+    var el = document.getElementById(id);
     el.style.width = Math.max(0, Math.min(100, v)) + '%';
     el.classList.remove('warn', 'crit');
     if (v < 20) el.classList.add('crit');
@@ -1591,17 +1743,18 @@ function startBattle(playerMonster, onEnd) {
 
   function formatAge(min) {
     if (min < 60) return Math.floor(min) + ' min';
-    const h = Math.floor(min / 60), m = Math.floor(min % 60);
+    var h = Math.floor(min / 60), m = Math.floor(min % 60);
     if (h < 24) return h + 'h ' + m + 'm';
-    const d = Math.floor(h / 24);
+    var d = Math.floor(h / 24);
     return d + 'd ' + (h % 24) + 'h';
   }
 
+  var lastWarnSfx = 0;
   function updateBubble() {
-    const now = Date.now();
-    let msg = '';
+    var now = Date.now();
+    var msg = '';
     if (monster.stage === STAGE.EGG) {
-      const p = monster.age / HATCH_AGE_MIN;
+      var p = monster.age / HATCH_AGE_MIN;
       if (p < 0.3) msg = '...';
       else if (p < 0.7) msg = '*tic-tac*';
       else if (p < 0.95) msg = '*crack!*';
@@ -1610,12 +1763,12 @@ function startBattle(playerMonster, onEnd) {
     else if (monster.sleeping) msg = 'Zzz...';
     else if (monster.sick) msg = '🤒 Me siento mal';
     else if (monster.pooCount > 0) msg = '💩 ¡Caca!';
-    else if (monster.needs.hunger < 25) msg = '🍖 ¡Hambre!';
+    else if (monster.needs.hunger < 25) { msg = '🍖 ¡Hambre!'; maybeWarnSfx('hungry'); }
     else if (monster.needs.energy < 25) msg = '😴 Cansado';
     else if (monster.needs.hygiene < 25) msg = '🧼 Sucio';
     else if (monster.needs.happy < 25) msg = '😟 Aburrido';
-    else if (Math.random() < 0.003) msg = pick(['¡Estoy genial!', '¡Juega!', '🎵 ♪ ♫']);
-    const b = document.getElementById('status-bubble');
+    else if (Math.random() < 0.003) { msg = pick(['¡Estoy genial!', '¡Juega!', '🎵 ♪ ♫']); maybeWarnSfx('happy'); }
+    var b = document.getElementById('status-bubble');
     if (msg && msg !== lastBubble) {
       b.textContent = msg; b.classList.remove('hidden');
       lastBubble = msg; bubbleUntil = now + 2500;
@@ -1623,11 +1776,18 @@ function startBattle(playerMonster, onEnd) {
       b.classList.add('hidden'); lastBubble = '';
     }
   }
+  function maybeWarnSfx(kind){
+    var now = Date.now();
+    if (now - lastWarnSfx < 4000) return;
+    lastWarnSfx = now;
+    if (kind === 'hungry') AUDIO.sfxHungry();
+    else if (kind === 'happy') AUDIO.sfxHappy();
+  }
 
   function loop() {
     try {
       frame++;
-      const now = Date.now();
+      var now = Date.now();
       if (now - lastTickReal >= REAL_MS_PER_GAME_MIN) {
         lastTickReal = now;
         handleEvents(tickMonster(monster));
@@ -1636,8 +1796,8 @@ function startBattle(playerMonster, onEnd) {
       renderScreen(); renderUI();
     } catch (e) {
       console.error(e);
-      const box = document.getElementById('error-overlay');
-      const m = document.getElementById('error-msg');
+      var box = document.getElementById('error-overlay');
+      var m = document.getElementById('error-msg');
       if (box && m) { m.textContent = e.message || String(e); box.classList.remove('hidden'); }
       return;
     }
@@ -1645,13 +1805,14 @@ function startBattle(playerMonster, onEnd) {
   }
 
   function handleEvents(events) {
-    for (const ev of events) {
-      if (ev.type === 'hatch') flash('🐣 ¡Eclosionó!', monster.name + ' nació. Tipo: ' + TYPE_NAMES_ES[monster.type] + ' ' + TYPE_EMOJI[monster.type]);
-      else if (ev.type === 'levelup') flash('⬆ ¡Nivel ' + ev.level + '!', monster.name + ' se siente más fuerte.');
-      else if (ev.type === 'evolve') flash('✨ ¡EVOLUCIÓN!', monster.name + ' evolucionó a ' + STAGE_NAMES[ev.stage] + ' ' + BRANCH_NAMES[ev.branch]);
-      else if (ev.type === 'sick') flash('🤒 Enfermo', monster.name + ' no se siente bien.');
+    for (var i = 0; i < events.length; i++) {
+      var ev = events[i];
+      if (ev.type === 'hatch') { AUDIO.sfxHatch(); flash('🐣 ¡Eclosionó!', monster.name + ' nació. Tipo: ' + TYPE_NAMES_ES[monster.type] + ' ' + TYPE_EMOJI[monster.type]); }
+      else if (ev.type === 'levelup') { AUDIO.sfxLevel(); flash('⬆ ¡Nivel ' + ev.level + '!', monster.name + ' se siente más fuerte.'); }
+      else if (ev.type === 'evolve') { AUDIO.sfxEvolve(); flash('✨ ¡EVOLUCIÓN!', monster.name + ' evolucionó a ' + STAGE_NAMES[ev.stage] + ' ' + BRANCH_NAMES[ev.branch]); }
+      else if (ev.type === 'sick') { AUDIO.sfxSick(); flash('🤒 Enfermo', monster.name + ' no se siente bien.'); }
       else if (ev.type === 'cured') flash('😊 Recuperado', monster.name + ' ya está bien.');
-      else if (ev.type === 'death') flash('💀 Murió', monster.name + ' falleció. Pulsa Reiniciar.');
+      else if (ev.type === 'death') { AUDIO.sfxDeath(); AUDIO.stopMusic(); flash('💀 Murió', monster.name + ' falleció. Pulsa Reset.'); }
       else if (ev.type === 'wakeup') flash('🌅 Despertó', monster.name + ' descansó bien.');
     }
   }
@@ -1660,66 +1821,81 @@ function startBattle(playerMonster, onEnd) {
     openModal('<h2>' + title + '</h2><p>' + body + '</p><div class="actions"><button class="success" onclick="closeModal()">OK</button></div>');
   }
 
-  document.querySelectorAll('.btn').forEach(function (btn) {
-    btn.addEventListener('click', function () { handleAction(btn.dataset.action); });
+  // Botones
+  var btns = document.querySelectorAll('.btn');
+  for (var i = 0; i < btns.length; i++) (function(b){
+    b.addEventListener('click', function(){ AUDIO.sfxBtn(); handleAction(b.dataset.action); });
+  })(btns[i]);
+  document.getElementById('help-btn').addEventListener('click', function(){ AUDIO.sfxBtn(); showHelp(); });
+  document.getElementById('mute-btn').addEventListener('click', function(){
+    var muted = AUDIO.toggleMute();
+    document.getElementById('mute-btn').textContent = muted ? '🔇' : '🔊';
   });
-  document.getElementById('help-btn').addEventListener('click', showHelp);
 
   function handleAction(a) {
-    if (a === 'feed') { if (feed(monster)) { window._foodTimer = 90; saveMonster(monster); } }
-    else if (a === 'clean') { if (clean(monster)) saveMonster(monster); }
-    else if (a === 'sleep') { if (toggleSleep(monster)) saveMonster(monster); }
-    else if (a === 'play') { if (pet(monster)) { window._heartTimer = 90; saveMonster(monster); } }
+    if (a === 'feed') {
+      if (feed(monster)) {
+        eatAnim = { startFrame: frame, duration: 60 };
+        AUDIO.sfxFeed();
+        saveMonster(monster);
+      }
+    }
+    else if (a === 'clean') { if (clean(monster)) { AUDIO.sfxClean(); saveMonster(monster); } }
+    else if (a === 'sleep') { if (toggleSleep(monster)) { AUDIO.sfxSleep(); saveMonster(monster); } }
+    else if (a === 'play') { if (pet(monster)) { window._heartTimer = 90; AUDIO.sfxPet(); saveMonster(monster); } }
     else if (a === 'train') openTrainingMenu(monster, function (r) {
       addStat(monster, r.stat, r.statGain);
       handleEvents(giveXP(monster, r.xpGain)); saveMonster(monster);
     });
     else if (a === 'battle') startBattle(monster, function (r) {
+      if (r.victory) AUDIO.sfxWin(); else if (!r.fled) AUDIO.sfxLose();
       handleEvents(giveXP(monster, r.xpGain)); saveMonster(monster);
     });
     else if (a === 'reset') confirmReset();
   }
 
   function confirmReset() {
-    openModal('<h2>↺ Reiniciar</h2><p>Esto borrará a <strong>' + monster.name + '</strong> y empezarás con un huevo nuevo.</p><div class="actions"><button onclick="closeModal()">Cancelar</button><button class="danger" id="cr">Sí, reiniciar</button></div>');
+    openModal('<h2>Reiniciar</h2><p>Esto borrara a <strong>' + monster.name + '</strong> y empezaras con un huevo nuevo.</p><div class="actions"><button onclick="closeModal()">Cancelar</button><button class="danger" id="cr">Si, reiniciar</button></div>');
     document.getElementById('cr').onclick = function () {
       clearSave(); monster = createMonster(promptName()); saveMonster(monster); closeModal();
+      if (!AUDIO.musicTimer && !AUDIO.muted) AUDIO.startMusic();
     };
   }
 
   function showHelp() {
-    openModal('<h2>📖 ¿Cómo se juega?</h2>' +
-      '<p><strong>Empieza como huevo</strong>. Eclosiona en ~30s.</p>' +
-      '<p>4 necesidades bajan con el tiempo. Si 2+ llegan a 0 o tiene 3 cacas, se enferma; sigue así y muere.</p>' +
-      '<p><strong>Botones:</strong> 🍖Comer · 🧼Limpiar · 💤Dormir · ❤️Mimar · 🏋️Entrenar · ⚔️Batallar</p>' +
-      '<p><strong>Evolución por stat dominante:</strong> FUE→Guerrero, AGI→Veloz, INT→Sabio. Niveles 5 y 15.</p>' +
-      '<p><strong>Tipos:</strong> 🔥&gt;🌿&gt;🪨&gt;⚡&gt;💧&gt;🔥</p>' +
-      '<div class="actions"><button class="success" onclick="closeModal()">¡OK!</button></div>');
+    openModal('<h2>Como se juega</h2>' +
+      '<p>Empieza como huevo. Eclosiona en ~30s.</p>' +
+      '<p>4 necesidades bajan con el tiempo. Si 2+ llegan a 0 o tiene 3 cacas, se enferma; sigue asi y muere.</p>' +
+      '<p>Botones: Comer / Limpiar / Dormir / Mimar / Entrenar / Batallar</p>' +
+      '<p>Evolucion por stat dominante: FUE Guerrero, AGI Veloz, INT Sabio. Niveles 5 y 15.</p>' +
+      '<p>Tipos: Fuego > Planta > Tierra > Electrico > Agua > Fuego</p>' +
+      '<p>Audio: el boton de sonido arriba silencia/activa todo.</p>' +
+      '<div class="actions"><button class="success" onclick="closeModal()">OK</button></div>');
   }
 
   function promptName() {
-    const n = (prompt('¿Cómo se llama tu monstruo?', 'Mochi') || 'Mochi').trim();
+    var n = (prompt('Como se llama tu monstruo?', 'Mochi') || 'Mochi').trim();
     return n.slice(0, 12) || 'Mochi';
   }
 
   window.addEventListener('keydown', function (e) {
-    const open = !document.getElementById('modal').classList.contains('hidden');
+    var open = !document.getElementById('modal').classList.contains('hidden');
     if (open) { if (e.key === 'Escape') closeModal(); return; }
-    const k = e.key.toLowerCase();
-    if (k === 'a') handleAction('feed');
-    else if (k === 's') handleAction('clean');
-    else if (k === 'd') handleAction('sleep');
-    else if (k === 'f') handleAction('play');
-    else if (k === 't') handleAction('train');
-    else if (k === 'b') handleAction('battle');
+    var k = e.key.toLowerCase();
+    if (k === 'a') { AUDIO.sfxBtn(); handleAction('feed'); }
+    else if (k === 's') { AUDIO.sfxBtn(); handleAction('clean'); }
+    else if (k === 'd') { AUDIO.sfxBtn(); handleAction('sleep'); }
+    else if (k === 'f') { AUDIO.sfxBtn(); handleAction('play'); }
+    else if (k === 't') { AUDIO.sfxBtn(); handleAction('train'); }
+    else if (k === 'b') { AUDIO.sfxBtn(); handleAction('battle'); }
     else if (k === '?' || k === 'h') showHelp();
+    else if (k === 'm') document.getElementById('mute-btn').click();
   });
 
   loop();
 
   if (monster.stage === STAGE.EGG && monster.age < 1) {
-    flash('🥚 ¡Bienvenido!',
-      'Tu V-Pet acaba de ser puesto. Eclosionará en ~30 segundos. Pulsa <strong>?</strong> arriba a la derecha para ver la ayuda completa.');
+    flash('Bienvenido!', 'Tu V-Pet acaba de ser puesto. Eclosionara en ~30 segundos. Pulsa ? para ayuda o el icono de sonido para silenciar.');
   }
 })();
 </script>
