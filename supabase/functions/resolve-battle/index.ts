@@ -13,6 +13,7 @@ import { createClient } from 'jsr:@supabase/supabase-js@2';
 import { DEFAULT_BALANCE } from '../_shared/engine/config/balance.ts';
 import { resolveBattle, makeRng, type Combatant } from '../_shared/engine/combat.ts';
 import { applyBattleAftermath } from '../_shared/engine/aftermath.ts';
+import { applyBattleRewards } from '../_shared/engine/rewards.ts';
 import { SPECIES } from '../_shared/engine/data/monsters.ts';
 
 function toCombatant(id: string, state: any): Combatant {
@@ -84,6 +85,19 @@ Deno.serve(async (req: Request) => {
     const newB = applyBattleAftermath(bState, { opponentWasSick: aState.health === 'sick' }, DEFAULT_BALANCE, makeRng(seed ^ 2));
     await admin.from('monsters').update({ state: newA }).eq('owner_id', ch.challenger_id);
     await admin.from('monsters').update({ state: newB }).eq('owner_id', ch.challenged_id);
+
+    // R32 — grant exp + points server-side from config (winner vs loser).
+    for (const ownerId of [ch.challenger_id, ch.challenged_id]) {
+      const { data: prof } = await admin
+        .from('profiles').select('exp, points').eq('id', ownerId).single();
+      const updated = applyBattleRewards(
+        { exp: prof?.exp ?? 0, points: prof?.points ?? 0, battles: 0, wins: 0 },
+        ownerId === winnerId,
+        DEFAULT_BALANCE,
+      );
+      await admin.from('profiles').update({ exp: updated.exp, points: updated.points }).eq('id', ownerId);
+    }
+
     await admin.from('challenges').update({ status: 'accepted', battle_id: battle?.id }).eq('id', challengeId);
 
     return new Response(JSON.stringify({ winnerId, battleId: battle?.id, log: result.log }), {

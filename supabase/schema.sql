@@ -9,6 +9,10 @@
 create table if not exists public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
   display_name text not null,
+  -- R32 — experience + points (points are the currency for items, R29).
+  -- Written ONLY by the server (resolve-battle Edge Function), never the client.
+  exp int not null default 0,
+  points int not null default 0,
   created_at timestamptz not null default now()
 );
 

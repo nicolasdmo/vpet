@@ -31,9 +31,14 @@ public/              PWA: manifest + service worker push (R34-R36)
 
 ```bash
 npm install
-npm run dev        # prototipo single-player (no necesita Supabase)
-npm test           # corre la suite del motor (node --test)
+npm run dev        # juego single-player (no necesita Supabase)
+npm run build      # build de producción (verificado: compila y typecheckea)
+npm test           # corre la suite del motor (node --test) — 21 tests
 ```
+
+**Deploy a Vercel**: conectar este repo en vercel.com y deployar — el juego
+single-player anda sin variables de entorno. Las funciones online se activan al
+cargar las env vars de Supabase (ver `.env.example`).
 
 Para la parte online (auth, persistencia, peleas, ranking, push) hace falta:
 1. Crear proyecto en **Supabase**, correr `supabase/schema.sql`, habilitar **Google** en Auth.
@@ -43,8 +48,8 @@ Para la parte online (auth, persistencia, peleas, ranking, push) hace falta:
 
 ## Estado
 
-- ✅ **Probado**: todo `src/game` (motor) — 17 tests pasando.
-- 🟡 **Escrito, no desplegado/verificado** (sin credenciales en este entorno): UI Next.js, schema Supabase, Edge Function de combate, clientes auth, PWA/push.
-- ⏳ **Pendiente de contenido**: completar el roster a 40+ (la estructura ya soporta agregarlos como datos), y conectar la UI online a los próximos hitos.
+- ✅ **Probado**: todo `src/game` (motor) — **21 tests pasando**. Incluye roster de **40+ monstruos** con árbol válido, fix de care-mistakes por tiempo (no por tick), longevidad por buen cuidado (`goodCareDays`), y lógica de recompensas exp/puntos (R32).
+- 🟡 **Escrito, no desplegado/verificado** (sin credenciales en este entorno): UI Next.js, schema Supabase (con columnas exp/points), Edge Function de combate + recompensas, clientes auth, PWA/push.
+- ⏳ **Pendiente**: conectar la mitad online (auth Google + persistencia Supabase, lista de jugadores/retos, ranking, PWA push, deploy) y la animación de evolución.
 
 Ver el reporte de cobertura del `/build` para el detalle requisito por requisito.

@@ -13,7 +13,8 @@ import { resolveBattle, makeRng, type Combatant } from '../combat.ts';
 import { applyBattleAftermath } from '../aftermath.ts';
 import { typeEffectiveness } from '../data/elementTypes.ts';
 import { useItem } from '../items.ts';
-import { SPECIES } from '../data/monsters.ts';
+import { SPECIES, EVOLUTION_RULES } from '../data/monsters.ts';
+import { applyBattleRewards, winPercentage, EMPTY_PROGRESS } from '../rewards.ts';
 import type { Stat } from '../types.ts';
 
 const T0 = 1_700_000_000_000;
@@ -194,4 +195,70 @@ test('jeringa cures sick, curita cures injured, no-op otherwise', () => {
   assert.equal(useItem({ ...m, health: 'sick' }, 'jeringa').health, 'healthy');
   assert.equal(useItem({ ...m, health: 'injured' }, 'curita').health, 'healthy');
   assert.equal(useItem({ ...m, health: 'sick' }, 'curita').health, 'sick'); // wrong item
+});
+
+// ---- R5 bug fix: care-mistake accrual is tick-frequency-independent ----
+test('care mistakes accrue proportionally, not once per tick', () => {
+  const starved = (now: number) => ({
+    ...createMonster('matecito', { now: T0, cfg: CFG }),
+    fullness: 0, energy: 0, lastUpdated: now,
+  });
+  // 5 seconds of starvation must add ~0 mistakes (old bug added a full 1).
+  const fiveSec = simulateNeeds(starved(T0), T0 + 5000, CFG);
+  assert.ok(fiveSec.newCareMistakes < 0.01, `5s added ${fiveSec.newCareMistakes}`);
+
+  // One 10h window == two consecutive 5h windows (frequency independence).
+  const oneShot = simulateNeeds(starved(T0), hours(10), CFG).monster.careMistakes;
+  const firstHalf = simulateNeeds(starved(T0), hours(5), CFG).monster;
+  const split = simulateNeeds(firstHalf, hours(10), CFG).monster.careMistakes;
+  assert.ok(Math.abs(oneShot - split) < 1e-9, `oneShot=${oneShot} split=${split}`);
+
+  // Long starvation still clearly accrues mistakes.
+  assert.ok(simulateNeeds(starved(T0), hours(48), CFG).newCareMistakes > 1);
+});
+
+// ---- R7 bug fix: good care increments goodCareDays and extends lifespan ----
+test('sustained good care raises goodCareDays and extends effective lifespan', () => {
+  const m = createMonster('matecito', { now: T0, cfg: CFG }); // starts well-fed/clean
+  const after = simulateNeeds(m, hours(2), CFG).monster;
+  assert.ok(after.goodCareDays > 0, 'good care should accrue');
+
+  // With enough good-care credit, the monster outlives its base lifespan.
+  const cared = { ...m, goodCareDays: 15 };
+  const past = hours(CFG.lifespan.baseHours + 50);
+  assert.equal(advanceAge(cared, past, CFG).monster.alive, true);
+  // Without that credit it would already be dead at the same age.
+  assert.equal(advanceAge(m, past, CFG).monster.alive, false);
+});
+
+// ---- R32 rewards ----
+test('battle rewards grant exp/points and track win%', () => {
+  let p = EMPTY_PROGRESS;
+  p = applyBattleRewards(p, true, CFG); // win
+  assert.equal(p.exp, CFG.rewards.expWin);
+  assert.equal(p.points, CFG.rewards.pointsWin);
+  assert.equal(p.wins, 1);
+  assert.equal(p.battles, 1);
+  p = applyBattleRewards(p, false, CFG); // loss
+  assert.equal(p.exp, CFG.rewards.expWin + CFG.rewards.expLoss);
+  assert.equal(p.battles, 2);
+  assert.equal(winPercentage(p), 50);
+  assert.equal(winPercentage(EMPTY_PROGRESS), 0);
+});
+
+// ---- R14 roster: 40+ species, valid branching tree, no dead ends ----
+test('roster has 40+ species and a consistent evolution tree', () => {
+  assert.ok(Object.keys(SPECIES).length >= 40, `only ${Object.keys(SPECIES).length} species`);
+
+  for (const r of EVOLUTION_RULES) {
+    assert.ok(SPECIES[r.from], `rule.from missing: ${r.from}`);
+    assert.ok(SPECIES[r.to], `rule.to missing: ${r.to}`);
+  }
+  // Every non-mega species can evolve and has a default (priority 0) rule.
+  for (const s of Object.values(SPECIES)) {
+    if (s.stage === 'mega') continue;
+    const outgoing = EVOLUTION_RULES.filter((r) => r.from === s.id);
+    assert.ok(outgoing.length >= 1, `dead end (no evolution): ${s.id}`);
+    assert.ok(outgoing.some((r) => r.priority === 0), `no default rule for ${s.id}`);
+  }
 });
