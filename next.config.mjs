@@ -1,11 +1,16 @@
 /** @type {import('next').NextConfig} */
+
+// The same repo deploys to two targets:
+//  - GitHub Pages (static, project page at /vpet): set GITHUB_PAGES=true (see the
+//    Actions workflow) -> static export under basePath '/vpet'.
+//  - Vercel / local: full Next.js app at the domain root (no export, no basePath) so
+//    the online half (SSR, route handlers, Supabase) can run later.
+const isGithubPages = process.env.GITHUB_PAGES === 'true';
+
 const nextConfig = {
-  // Static export so the single-player game can be served by GitHub Pages
-  // (Pages can't run a Next.js server). Produces a fully static site in ./out.
-  output: 'export',
-  // Project page lives at nicolasdmo.github.io/vpet, so assets resolve under /vpet.
-  basePath: '/vpet',
-  trailingSlash: true,
+  ...(isGithubPages
+    ? { output: 'export', basePath: '/vpet', trailingSlash: true }
+    : {}),
   images: { unoptimized: true },
 };
 
