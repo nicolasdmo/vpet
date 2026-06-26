@@ -8,13 +8,18 @@
 
 import { useEffect, useState } from 'react';
 import type { ElementType, EvolutionStage, MonsterSpecies } from '@/game/types.ts';
+import { SPRITE_IDS } from '@/game/data/spriteManifest.ts';
 
 // Exposed via next.config so the <img> src resolves under the right base on both
 // GitHub Pages (/vpet) and Vercel (root).
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 export function MonsterSprite({ species, size = 128 }: { species: MonsterSpecies; size?: number }) {
-  if (species.spriteKey) return <PixelIdle spriteKey={species.spriteKey} name={species.name} size={size} />;
+  // Real pixel-art sprite if one has been produced (manifest is the source of truth,
+  // regenerated each sprite batch); otherwise the procedural fallback.
+  if (SPRITE_IDS.includes(species.id)) {
+    return <PixelIdle spriteKey={species.id} name={species.name} size={size} />;
+  }
   return <ProceduralSprite species={species} size={size} />;
 }
 
