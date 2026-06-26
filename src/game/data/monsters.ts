@@ -22,18 +22,21 @@ export const SPECIES: Record<string, MonsterSpecies> = {
   // =====================================================================
   matecito: {
     id: 'matecito', name: 'Matecito', stage: 'baby', types: ['mito'],
+    spriteKey: 'matecito',
     description: 'Bebé redondo con forma de mate de calabaza, bombilla a modo de antena, ojitos grandes; sale vapor tibio.',
     baseStats: { hp: 40, mp: 20, fuerza: 8, defensa: 8, inteligencia: 8, agilidad: 8 },
     techniques: [tech('burbujeo', 'Burbujeo', 'mito', 8, 0, 'especial')],
   },
   terroncito: {
     id: 'terroncito', name: 'Terroncito', stage: 'baby', types: ['tierra'],
+    spriteKey: 'terroncito',
     description: 'Bolita de barro pampeano con patitas, mirada tranquila, alguna brizna de pasto encima.',
     baseStats: { hp: 44, mp: 16, fuerza: 9, defensa: 11, inteligencia: 7, agilidad: 6 },
     techniques: [tech('terronazo', 'Terronazo', 'tierra', 9, 0, 'fisico')],
   },
   gotita: {
     id: 'gotita', name: 'Gotita', stage: 'baby', types: ['agua'],
+    spriteKey: 'gotita',
     description: 'Gota de agua de río con carita, reflejos celestes, salta y chapotea.',
     baseStats: { hp: 38, mp: 24, fuerza: 7, defensa: 8, inteligencia: 10, agilidad: 10 },
     techniques: [tech('salpicon', 'Salpicón', 'agua', 8, 0, 'especial')],
@@ -90,6 +93,7 @@ export const SPECIES: Record<string, MonsterSpecies> = {
   // =====================================================================
   carpinchon: {
     id: 'carpinchon', name: 'Carpinchón', stage: 'rookie', types: ['bestia', 'tierra'],
+    spriteKey: 'carpinchon',
     description: 'Carpincho corpulento y sereno, pelaje marrón, postura tanque; aguanta de todo.',
     baseStats: { hp: 130, mp: 40, fuerza: 30, defensa: 38, inteligencia: 18, agilidad: 16 },
     techniques: [tech('embestida', 'Embestida', 'bestia', 26, 4, 'fisico'), tech('muralla', 'Muralla', 'tierra', 18, 3, 'fisico')],
@@ -224,6 +228,7 @@ export const SPECIES: Record<string, MonsterSpecies> = {
   },
   yaguarete_rey: {
     id: 'yaguarete_rey', name: 'Yaguareté Rey', stage: 'mega', types: ['bestia'],
+    spriteKey: 'yaguarete_rey',
     description: 'Yaguareté monumental coronado, musculatura imponente, presencia de monarca del monte.',
     baseStats: { hp: 360, mp: 90, fuerza: 110, defensa: 85, inteligencia: 50, agilidad: 75 },
     techniques: [tech('zarpa_real', 'Zarpa real', 'bestia', 70, 8, 'fisico'), tech('rugido', 'Rugido del monte', 'bestia', 50, 6, 'especial')],

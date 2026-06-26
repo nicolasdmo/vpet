@@ -11,6 +11,9 @@ const nextConfig = {
   ...(isGithubPages
     ? { output: 'export', basePath: '/vpet', trailingSlash: true }
     : {}),
+  // Exposed to the client so raw <img src> for sprites resolves under the right
+  // base on both targets (Next doesn't auto-prefix basePath on plain <img>).
+  env: { NEXT_PUBLIC_BASE_PATH: isGithubPages ? '/vpet' : '' },
   images: { unoptimized: true },
 };
 

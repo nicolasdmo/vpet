@@ -1,9 +1,48 @@
-// Generic procedural sprites (R17/R38). Each species gets a distinct, deterministic
-// SVG "creature" derived from its type (color) and stage (size/features) — no
-// external art needed. If a real sprite is later uploaded, `spriteKey` takes over
-// (the replace path), so this stays a true placeholder.
+'use client';
 
+// Monster sprite renderer.
+// - If the species has a `spriteKey`, play a 2-frame idle from real pixel-art PNGs
+//   (public/sprites/<key>/idle_0.png + idle_1.png) — the Tamagotchi "breathing" look.
+// - Otherwise fall back to a deterministic procedural SVG so every species still
+//   renders while its art is being produced.
+
+import { useEffect, useState } from 'react';
 import type { ElementType, EvolutionStage, MonsterSpecies } from '@/game/types.ts';
+
+// Exposed via next.config so the <img> src resolves under the right base on both
+// GitHub Pages (/vpet) and Vercel (root).
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
+export function MonsterSprite({ species, size = 128 }: { species: MonsterSpecies; size?: number }) {
+  if (species.spriteKey) return <PixelIdle spriteKey={species.spriteKey} name={species.name} size={size} />;
+  return <ProceduralSprite species={species} size={size} />;
+}
+
+function PixelIdle({ spriteKey, name, size }: { spriteKey: string; name: string; size: number }) {
+  const [frame, setFrame] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setFrame((f) => f ^ 1), 600); // ~2fps idle
+    return () => clearInterval(id);
+  }, []);
+  const imgStyle = (visible: boolean) =>
+    ({
+      position: 'absolute',
+      inset: 0,
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+      imageRendering: 'pixelated',
+      opacity: visible ? 1 : 0,
+    }) as const;
+  return (
+    <div style={{ position: 'relative', width: size, height: size }}>
+      <img src={`${BASE}/sprites/${spriteKey}/idle_0.png`} alt={name} style={imgStyle(frame === 0)} />
+      <img src={`${BASE}/sprites/${spriteKey}/idle_1.png`} alt="" aria-hidden style={imgStyle(frame === 1)} />
+    </div>
+  );
+}
+
+// ---------------- procedural fallback ----------------
 
 const TYPE_COLOR: Record<ElementType, string> = {
   fuego: '#e0552b',
@@ -31,26 +70,7 @@ function shade(hex: string, amt: number): string {
   return `rgb(${r},${g},${b})`;
 }
 
-export function MonsterSprite({
-  species,
-  size = 128,
-}: {
-  species: MonsterSpecies;
-  size?: number;
-}) {
-  // Real-art path: if a sprite was uploaded, use it.
-  if (species.spriteKey) {
-    return (
-      <img
-        src={`/sprites/${species.spriteKey}`}
-        alt={species.name}
-        width={size}
-        height={size}
-        style={{ imageRendering: 'pixelated' }}
-      />
-    );
-  }
-
+function ProceduralSprite({ species, size }: { species: MonsterSpecies; size: number }) {
   const primary = species.types[0] ?? 'bestia';
   const accent = species.types[1] ?? primary;
   const color = TYPE_COLOR[primary];
@@ -60,7 +80,6 @@ export function MonsterSprite({
   const cy = 54;
   const bodyR = 30 * s;
 
-  // Deterministic wobble from the id so each species looks a little different.
   let seed = 0;
   for (const ch of species.id) seed = (seed * 31 + ch.charCodeAt(0)) % 997;
   const eyeOffset = 8 + (seed % 4);
@@ -75,7 +94,6 @@ export function MonsterSprite({
         </radialGradient>
       </defs>
 
-      {/* type-flavored features behind the body */}
       {(primary === 'fuego' || accent === 'fuego') &&
         [0, 1, 2].map((i) => (
           <polygon key={i} points={`${cx - 14 + i * 14},${cy - bodyR} ${cx - 8 + i * 14},${cy - bodyR - 16 * s} ${cx - 2 + i * 14},${cy - bodyR}`} fill={shade(accentColor, 30)} />
@@ -98,21 +116,18 @@ export function MonsterSprite({
         <circle cx={cx} cy={cy} r={bodyR + 7 * s} fill="none" stroke={shade(accentColor, 60)} strokeWidth="2" opacity={0.6} />
       )}
 
-      {/* body */}
       <circle cx={cx} cy={cy} r={bodyR} fill={`url(#g-${species.id})`} stroke={shade(color, -40)} strokeWidth="2" />
       {(primary === 'tierra' || accent === 'tierra') &&
         [[-10, -6], [12, 4], [-4, 12]].map(([dx, dy], i) => (
           <circle key={i} cx={cx + dx * s} cy={cy + dy * s} r={4 * s} fill={shade(color, -25)} />
         ))}
 
-      {/* eyes */}
       {[-1, 1].map((d) => (
         <g key={d}>
           <circle cx={cx + d * eyeOffset} cy={cy - 4} r={6 * s} fill="#fff" />
           <circle cx={cx + d * eyeOffset} cy={cy - 3} r={3 * s} fill="#15233a" />
         </g>
       ))}
-      {/* mouth */}
       {happy ? (
         <path d={`M ${cx - 8 * s} ${cy + 10 * s} Q ${cx} ${cy + 16 * s} ${cx + 8 * s} ${cy + 10 * s}`} fill="none" stroke="#15233a" strokeWidth="2" strokeLinecap="round" />
       ) : (
@@ -122,7 +137,6 @@ export function MonsterSprite({
   );
 }
 
-// Egg / tombstone helpers for non-creature states.
 export function EggSprite({ size = 128 }: { size?: number }) {
   return (
     <svg viewBox="0 0 100 100" width={size} height={size} role="img" aria-label="huevo">
